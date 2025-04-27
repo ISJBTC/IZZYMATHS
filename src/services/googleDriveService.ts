@@ -1,10 +1,5 @@
 
-// This is a placeholder for Google Drive API integration
-// In a real implementation, you would need to:
-// 1. Create a Google Cloud project
-// 2. Enable the Google Drive API
-// 3. Create OAuth credentials
-// 4. Implement proper authentication flow
+import { google } from 'googleapis';
 
 interface GoogleDriveFile {
   id: string;
@@ -13,40 +8,46 @@ interface GoogleDriveFile {
   webViewLink: string;
 }
 
+// You'll need to get these from the Google Cloud Console
+const GOOGLE_CLIENT_ID = 'YOUR_CLIENT_ID';
+const GOOGLE_CLIENT_SECRET = 'YOUR_CLIENT_SECRET';
+const GOOGLE_REDIRECT_URI = 'YOUR_REDIRECT_URI';
+const SCOPES = ['https://www.googleapis.com/auth/drive.readonly'];
+
+const auth = new google.auth.OAuth2(
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  GOOGLE_REDIRECT_URI
+);
+
+const drive = google.drive({ version: 'v3', auth });
+
 export const listFiles = async (folderId: string): Promise<GoogleDriveFile[]> => {
-  // This is a placeholder implementation
-  console.log(`Listing files from folder: ${folderId}`);
-  
-  // In a real implementation, you would make an API call to Google Drive
-  // For now, we'll return mock data
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        {
-          id: '1',
-          name: 'Linear Algebra Chapter 1',
-          mimeType: 'application/pdf',
-          webViewLink: 'https://example.com/file1',
-        },
-        {
-          id: '2',
-          name: 'Calculus Chapter 1',
-          mimeType: 'application/pdf',
-          webViewLink: 'https://example.com/file2',
-        },
-      ]);
-    }, 1000);
-  });
+  try {
+    const response = await drive.files.list({
+      q: `'${folderId}' in parents and trashed = false`,
+      fields: 'files(id, name, mimeType, webViewLink)',
+      orderBy: 'name',
+    });
+
+    return response.data.files as GoogleDriveFile[];
+  } catch (error) {
+    console.error('Error listing files:', error);
+    throw new Error('Failed to list files from Google Drive');
+  }
 };
 
 export const getFileContent = async (fileId: string): Promise<string> => {
-  // This is a placeholder implementation
-  console.log(`Getting content for file: ${fileId}`);
-  
-  // In a real implementation, you would make an API call to Google Drive
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve('Sample content from Google Drive');
-    }, 1000);
-  });
+  try {
+    const response = await drive.files.get({
+      fileId: fileId,
+      alt: 'media',
+    });
+
+    return response.data as string;
+  } catch (error) {
+    console.error('Error getting file content:', error);
+    throw new Error('Failed to get file content from Google Drive');
+  }
 };
+
