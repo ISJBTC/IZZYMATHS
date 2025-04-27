@@ -155,12 +155,14 @@ const Content: React.FC = () => {
                     
                     <div className="math-formula">
                       A = [a<sub>ij</sub>]<sub>m×n</sub> = 
-                      \begin{pmatrix} 
-                      a_{11} & a_{12} & \cdots & a_{1n} \\
-                      a_{21} & a_{22} & \cdots & a_{2n} \\
-                      \vdots & \vdots & \ddots & \vdots \\
-                      a_{m1} & a_{m2} & \cdots & a_{mn}
-                      \end{pmatrix}
+                      {`
+                      \\begin{pmatrix} 
+                      a_{11} & a_{12} & \\cdots & a_{1n} \\\\
+                      a_{21} & a_{22} & \\cdots & a_{2n} \\\\
+                      \\vdots & \\vdots & \\ddots & \\vdots \\\\
+                      a_{m1} & a_{m2} & \\cdots & a_{mn}
+                      \\end{pmatrix}
+                      `}
                     </div>
 
                     <p>Matrix addition is performed element by element:</p>
@@ -182,10 +184,12 @@ const Content: React.FC = () => {
                     
                     <div className="math-formula">
                       For a 2 × 2 matrix A = 
-                      \begin{pmatrix} 
-                      a & b \\
+                      {`
+                      \\begin{pmatrix} 
+                      a & b \\\\
                       c & d 
-                      \end{pmatrix}
+                      \\end{pmatrix}
+                      `}
                       , the determinant is:<br />
                       det(A) = |A| = ad - bc
                     </div>
@@ -194,21 +198,27 @@ const Content: React.FC = () => {
 
                     <div className="math-formula">
                       For a 2 × 2 matrix A = 
-                      \begin{pmatrix} 
-                      a & b \\
+                      {`
+                      \\begin{pmatrix} 
+                      a & b \\\\
                       c & d 
-                      \end{pmatrix}
+                      \\end{pmatrix}
+                      `}
                       , the inverse is:<br />
-                      A<sup>-1</sup> = \frac{1}{det(A)}
-                      \begin{pmatrix} 
-                      d & -b \\
+                      A<sup>-1</sup> = {`\\frac{1}{det(A)}`}
+                      {`
+                      \\begin{pmatrix} 
+                      d & -b \\\\
                       -c & a 
-                      \end{pmatrix}
-                      = \frac{1}{ad - bc}
-                      \begin{pmatrix} 
-                      d & -b \\
+                      \\end{pmatrix}
+                      `}
+                      = {`\\frac{1}{ad - bc}`}
+                      {`
+                      \\begin{pmatrix} 
+                      d & -b \\\\
                       -c & a 
-                      \end{pmatrix}
+                      \\end{pmatrix}
+                      `}
                     </div>
 
                     <p>A matrix is invertible if and only if its determinant is non-zero.</p>
