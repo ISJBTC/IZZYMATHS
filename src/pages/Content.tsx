@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -6,6 +7,36 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import PDFViewer from '@/components/PDFViewer';
 
 const Content: React.FC = () => {
+  const [topic, setTopic] = useState('linearAlgebra');
+
+  // Map topics to their display names and chapters
+  const topics = {
+    linearAlgebra: {
+      displayName: "Linear Algebra",
+      chapters: ["Chapter 1", "Chapter 2", "Chapter 3"]
+    },
+    calculus: {
+      displayName: "Calculus",
+      chapters: ["Chapter 1", "Chapter 2"]
+    },
+    diffEq: {
+      displayName: "Differential Equations",
+      chapters: ["Chapter 1", "Chapter 2", "Chapter 3"]
+    },
+    probStats: {
+      displayName: "Probability and Statistics",
+      chapters: ["Chapter 1", "Chapter 2"]
+    },
+    complexAnalysis: {
+      displayName: "Complex Analysis",
+      chapters: ["Chapter 1"]
+    }
+  };
+
+  const handleTopicClick = (topicKey: keyof typeof topics) => {
+    setTopic(topicKey);
+  };
+
   return (
     <MainLayout>
       <div className="container max-w-6xl mx-auto py-8 px-4">
@@ -16,59 +47,44 @@ const Content: React.FC = () => {
               <h3 className="font-semibold text-lg mb-3">Topics</h3>
               <Separator className="my-2" />
               <ul className="space-y-1">
-                <li>
-                  <Button variant="ghost" className="w-full justify-start text-math-primary font-medium">
-                    Linear Algebra
-                  </Button>
-                </li>
-                <li>
-                  <Button variant="ghost" className="w-full justify-start">
-                    Calculus
-                  </Button>
-                </li>
-                <li>
-                  <Button variant="ghost" className="w-full justify-start">
-                    Differential Equations
-                  </Button>
-                </li>
-                <li>
-                  <Button variant="ghost" className="w-full justify-start">
-                    Probability and Statistics
-                  </Button>
-                </li>
-                <li>
-                  <Button variant="ghost" className="w-full justify-start">
-                    Complex Analysis
-                  </Button>
-                </li>
+                {Object.entries(topics).map(([key, { displayName }]) => (
+                  <li key={key}>
+                    <Button 
+                      variant="ghost" 
+                      className={`w-full justify-start ${topic === key ? 'text-math-primary font-medium' : ''}`}
+                      onClick={() => handleTopicClick(key as keyof typeof topics)}
+                    >
+                      {displayName}
+                    </Button>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
 
           {/* Main Content */}
           <div className="flex-1">
-            <Tabs defaultValue="chapter1">
+            <Tabs defaultValue={`${topic}_chapter1`}>
               <div className="bg-white rounded-t-lg shadow px-4 pt-4">
-                <h1 className="text-2xl font-bold mb-4 text-math-primary">Linear Algebra</h1>
+                <h1 className="text-2xl font-bold mb-4 text-math-primary">{topics[topic as keyof typeof topics].displayName}</h1>
                 <TabsList>
-                  <TabsTrigger value="chapter1">Chapter 1</TabsTrigger>
-                  <TabsTrigger value="chapter2">Chapter 2</TabsTrigger>
-                  <TabsTrigger value="chapter3">Chapter 3</TabsTrigger>
+                  {topics[topic as keyof typeof topics].chapters.map((chapter, index) => (
+                    <TabsTrigger 
+                      key={`${topic}_chapter${index + 1}`} 
+                      value={`${topic}_chapter${index + 1}`}
+                    >
+                      {chapter}
+                    </TabsTrigger>
+                  ))}
                 </TabsList>
               </div>
 
               <div className="mt-px">
-                <TabsContent value="chapter1">
-                  <PDFViewer pdfPath="/pdfs/chapter1.pdf" />
-                </TabsContent>
-                
-                <TabsContent value="chapter2">
-                  <PDFViewer pdfPath="/pdfs/chapter2.pdf" />
-                </TabsContent>
-
-                <TabsContent value="chapter3">
-                  <PDFViewer pdfPath="/pdfs/chapter3.pdf" />
-                </TabsContent>
+                {topics[topic as keyof typeof topics].chapters.map((_, index) => (
+                  <TabsContent key={`${topic}_chapter${index + 1}`} value={`${topic}_chapter${index + 1}`}>
+                    <PDFViewer pdfPath={`/pdfs/${topic}_chapter${index + 1}.pdf`} />
+                  </TabsContent>
+                ))}
               </div>
             </Tabs>
           </div>

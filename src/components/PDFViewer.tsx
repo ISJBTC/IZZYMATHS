@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ZoomIn, ZoomOut, Maximize, Search } from 'lucide-react';
+import { ZoomIn, ZoomOut, Maximize, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 // Set up PDF.js worker
@@ -19,6 +19,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfPath }) => {
   const [scale, setScale] = useState(1);
   const [searchText, setSearchText] = useState('');
   const { toast } = useToast();
+  const [allPages, setAllPages] = useState(true);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
@@ -61,6 +62,22 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfPath }) => {
     });
   };
 
+  const nextPage = () => {
+    if (pageNumber < (numPages || 1)) {
+      setPageNumber(pageNumber + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (pageNumber > 1) {
+      setPageNumber(pageNumber - 1);
+    }
+  };
+
+  const toggleViewMode = () => {
+    setAllPages(!allPages);
+  };
+
   const preventRightClick = (e: React.MouseEvent) => {
     e.preventDefault();
     toast({
@@ -75,7 +92,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfPath }) => {
       className="w-full bg-white rounded-lg shadow-lg"
       onContextMenu={preventRightClick}
     >
-      <div className="p-4 border-b flex items-center justify-between">
+      <div className="p-4 border-b flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <Button variant="outline" size="icon" onClick={handleZoomOut}>
             <ZoomOut className="h-4 w-4" />
@@ -86,6 +103,9 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfPath }) => {
           </Button>
           <Button variant="outline" size="icon" onClick={handleFullScreen}>
             <Maximize className="h-4 w-4" />
+          </Button>
+          <Button variant="outline" onClick={toggleViewMode}>
+            {allPages ? "Single Page" : "All Pages"}
           </Button>
         </div>
         <div className="flex items-center gap-2">
@@ -101,6 +121,19 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfPath }) => {
             Search
           </Button>
         </div>
+        {!allPages && (
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="icon" onClick={prevPage} disabled={pageNumber <= 1}>
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <span>
+              Page {pageNumber} of {numPages || '-'}
+            </span>
+            <Button variant="outline" size="icon" onClick={nextPage} disabled={pageNumber >= (numPages || 1)}>
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        )}
       </div>
       <div 
         id="pdf-container"
@@ -114,20 +147,38 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfPath }) => {
         <Document
           file={pdfPath}
           onLoadSuccess={onDocumentLoadSuccess}
-          loading={<div>Loading PDF...</div>}
+          loading={<div className="text-center py-10">Loading PDF...</div>}
+          error={<div className="text-center py-10 text-red-500">Failed to load PDF. Please ensure the file exists in the public/pdfs directory.</div>}
+          className="flex flex-col items-center"
         >
-          <Page
-            pageNumber={pageNumber}
-            scale={scale}
-            renderTextLayer={true}
-            renderAnnotationLayer={false}
-          />
+          {allPages ? (
+            Array.from(new Array(numPages || 0), (_, index) => (
+              <div key={`page_${index + 1}`} className="mb-8">
+                <Page
+                  key={`page_${index + 1}`}
+                  pageNumber={index + 1}
+                  scale={scale}
+                  renderTextLayer={true}
+                  renderAnnotationLayer={false}
+                  className="shadow-lg mx-auto"
+                />
+                <div className="text-center mt-2 text-sm text-gray-500">
+                  Page {index + 1} of {numPages}
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="flex flex-col items-center">
+              <Page
+                pageNumber={pageNumber}
+                scale={scale}
+                renderTextLayer={true}
+                renderAnnotationLayer={false}
+                className="shadow-lg"
+              />
+            </div>
+          )}
         </Document>
-        {numPages && (
-          <div className="text-center mt-4">
-            Page {pageNumber} of {numPages}
-          </div>
-        )}
       </div>
     </div>
   );
