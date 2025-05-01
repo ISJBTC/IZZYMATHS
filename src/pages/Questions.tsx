@@ -31,7 +31,7 @@ const Questions: React.FC = () => {
     {
       id: 1,
       title: "Linear Algebra Mid-Term Examination",
-      institution: "IIT Delhi",
+      institution: "SPPU University",
       year: "2023",
       hasSolution: true,
       category: "Linear Algebra"
@@ -39,7 +39,7 @@ const Questions: React.FC = () => {
     {
       id: 2,
       title: "Calculus I Final Examination",
-      institution: "IIT Bombay",
+      institution: "MITWPU",
       year: "2022",
       hasSolution: true,
       category: "Calculus"
@@ -47,7 +47,7 @@ const Questions: React.FC = () => {
     {
       id: 3,
       title: "Differential Equations Assignment 3",
-      institution: "NIT Trichy",
+      institution: "MITADT",
       year: "2023",
       hasSolution: false,
       category: "Differential Equations"
@@ -55,7 +55,7 @@ const Questions: React.FC = () => {
     {
       id: 4,
       title: "Linear Algebra Practice Problems",
-      institution: "IIT Madras",
+      institution: "PCCOE",
       year: "2022",
       hasSolution: true,
       category: "Linear Algebra"
@@ -63,30 +63,21 @@ const Questions: React.FC = () => {
     {
       id: 5,
       title: "Numerical Methods End Semester",
-      institution: "IIT Kanpur",
+      institution: "JSPM University",
       year: "2021",
       hasSolution: true,
       category: "Numerical Methods"
     }
   ];
 
-  const filters = [
-    { name: "All Papers", count: 124 },
-    { name: "Linear Algebra", count: 35 },
-    { name: "Calculus", count: 29 },
-    { name: "Differential Equations", count: 22 },
-    { name: "Probability & Statistics", count: 18 },
-    { name: "Complex Analysis", count: 12 },
-    { name: "Numerical Methods", count: 8 }
-  ];
-
   const institutions = [
-    { name: "IIT Delhi", count: 28 },
-    { name: "IIT Bombay", count: 26 },
-    { name: "IIT Madras", count: 23 },
-    { name: "IIT Kanpur", count: 19 },
-    { name: "NIT Trichy", count: 15 },
-    { name: "NIT Surathkal", count: 13 }
+    { name: "SPPU University", count: 28 },
+    { name: "MITWPU", count: 26 },
+    { name: "MITADT", count: 23 },
+    { name: "ADYPATIL", count: 19 },
+    { name: "PCCOE", count: 15 },
+    { name: "ZEAL", count: 13 },
+    { name: "JSPM University", count: 10 }
   ];
 
   return (
@@ -101,23 +92,8 @@ const Questions: React.FC = () => {
         </div>
 
         <div className="flex flex-col md:flex-row gap-6">
-          {/* Sidebar */}
+          {/* Sidebar - Only Institution Filter */}
           <div className="md:w-64 space-y-6">
-            <div className="bg-white p-4 rounded-lg shadow">
-              <h3 className="font-semibold text-lg mb-3">Filter by Subject</h3>
-              <Separator className="my-2" />
-              <ul className="space-y-1">
-                {filters.map((filter) => (
-                  <li key={filter.name} className="flex justify-between items-center py-1.5 px-2 hover:bg-gray-50 rounded">
-                    <span>{filter.name}</span>
-                    <span className="text-sm bg-gray-100 px-2 py-0.5 rounded-full text-gray-600">
-                      {filter.count}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
             <div className="bg-white p-4 rounded-lg shadow">
               <h3 className="font-semibold text-lg mb-3">Filter by Institution</h3>
               <Separator className="my-2" />

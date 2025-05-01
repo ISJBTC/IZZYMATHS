@@ -15,21 +15,37 @@ const Content: React.FC = () => {
       displayName: "Linear Algebra",
       chapters: ["Chapter 1", "Chapter 2", "Chapter 3"]
     },
-    calculus: {
-      displayName: "Calculus",
-      chapters: ["Chapter 1", "Chapter 2"]
-    },
     diffEq: {
       displayName: "Differential Equations",
       chapters: ["Chapter 1", "Chapter 2", "Chapter 3"]
     },
-    probStats: {
-      displayName: "Probability and Statistics",
-      chapters: ["Chapter 1", "Chapter 2"]
+    calculusForEngineers: {
+      displayName: "Calculus for Engineers",
+      chapters: ["Chapter 1", "Chapter 2", "Chapter 3"]
     },
     complexAnalysis: {
       displayName: "Complex Analysis",
-      chapters: ["Chapter 1"]
+      chapters: ["Chapter 1", "Chapter 2"]
+    },
+    probStats: {
+      displayName: "Probability and Statistics",
+      chapters: ["Chapter 1", "Chapter 2", "Chapter 3"]
+    },
+    engineeringTransforms: {
+      displayName: "Engineering Transforms",
+      chapters: ["Chapter 1", "Chapter 2"]
+    },
+    numericalMethods: {
+      displayName: "Numerical Methods for Engineers",
+      chapters: ["Chapter 1", "Chapter 2", "Chapter 3"]
+    },
+    engineeringPhysics: {
+      displayName: "Engineering Physics",
+      chapters: ["Chapter 1", "Chapter 2", "Chapter 3"]
+    },
+    engineeringChemistry: {
+      displayName: "Engineering Chemistry",
+      chapters: ["Chapter 1", "Chapter 2", "Chapter 3"]
     }
   };
 
