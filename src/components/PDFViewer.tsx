@@ -1,6 +1,8 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import 'react-pdf/dist/esm/Page/TextLayer.css';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ZoomIn, ZoomOut, Maximize, Search, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -18,11 +20,16 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfPath }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [scale, setScale] = useState(1);
   const [searchText, setSearchText] = useState('');
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [currentSearchIndex, setCurrentSearchIndex] = useState(-1);
   const { toast } = useToast();
   const [allPages, setAllPages] = useState(true);
+  const documentRef = useRef<any>(null);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
+    setSearchResults([]);
+    setCurrentSearchIndex(-1);
   }
 
   const handleZoomIn = () => {
@@ -55,11 +62,76 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfPath }) => {
   };
 
   const handleSearch = async () => {
-    // PDF.js search functionality will be implemented here
-    toast({
-      title: "Search",
-      description: `Searching for: ${searchText}`,
-    });
+    if (!searchText.trim() || !documentRef.current) {
+      return;
+    }
+
+    try {
+      const pdfDocument = await documentRef.current.getDocument();
+      const results: any[] = [];
+      
+      toast({
+        title: "Searching",
+        description: "Looking for matches in document...",
+      });
+
+      // Search through all pages
+      for (let i = 1; i <= pdfDocument.numPages; i++) {
+        const page = await pdfDocument.getPage(i);
+        const textContent = await page.getTextContent();
+        const text = textContent.items.map((item: any) => item.str).join(' ');
+        
+        if (text.toLowerCase().includes(searchText.toLowerCase())) {
+          results.push({
+            pageNumber: i,
+            text
+          });
+        }
+      }
+
+      setSearchResults(results);
+      
+      if (results.length > 0) {
+        setCurrentSearchIndex(0);
+        if (!allPages) {
+          setPageNumber(results[0].pageNumber);
+        }
+        
+        toast({
+          title: "Search Results",
+          description: `Found ${results.length} matches for "${searchText}"`,
+        });
+      } else {
+        setCurrentSearchIndex(-1);
+        toast({
+          title: "No Results",
+          description: `No matches found for "${searchText}"`,
+        });
+      }
+    } catch (error) {
+      console.error("Search error:", error);
+      toast({
+        title: "Search Error",
+        description: "Failed to search the document",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const navigateSearchResults = (direction: 'next' | 'prev') => {
+    if (searchResults.length === 0) return;
+    
+    let newIndex;
+    if (direction === 'next') {
+      newIndex = (currentSearchIndex + 1) % searchResults.length;
+    } else {
+      newIndex = (currentSearchIndex - 1 + searchResults.length) % searchResults.length;
+    }
+    
+    setCurrentSearchIndex(newIndex);
+    if (!allPages) {
+      setPageNumber(searchResults[newIndex].pageNumber);
+    }
   };
 
   const nextPage = () => {
@@ -115,11 +187,25 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfPath }) => {
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             className="w-64"
+            onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
           />
           <Button onClick={handleSearch}>
             <Search className="h-4 w-4 mr-2" />
             Search
           </Button>
+          {searchResults.length > 0 && (
+            <>
+              <Button variant="outline" size="sm" onClick={() => navigateSearchResults('prev')}>
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <span className="text-sm">
+                {currentSearchIndex + 1} of {searchResults.length}
+              </span>
+              <Button variant="outline" size="sm" onClick={() => navigateSearchResults('next')}>
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </>
+          )}
         </div>
         {!allPages && (
           <div className="flex items-center gap-2">
@@ -148,18 +234,23 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfPath }) => {
           file={pdfPath}
           onLoadSuccess={onDocumentLoadSuccess}
           loading={<div className="text-center py-10">Loading PDF...</div>}
-          error={<div className="text-center py-10 text-red-500">Failed to load PDF. Please ensure the file exists in the public/pdfs directory.</div>}
+          error={<div className="text-center py-10 text-red-500">Failed to load PDF. Please check if the file exists at {pdfPath}.</div>}
           className="flex flex-col items-center"
+          inputRef={documentRef}
+          options={{
+            cMapUrl: 'https://unpkg.com/pdfjs-dist@3.4.120/cmaps/',
+            cMapPacked: true,
+          }}
         >
           {allPages ? (
             Array.from(new Array(numPages || 0), (_, index) => (
-              <div key={`page_${index + 1}`} className="mb-8">
+              <div key={`page_${index + 1}`} className="mb-8 flex flex-col items-center">
                 <Page
                   key={`page_${index + 1}`}
                   pageNumber={index + 1}
                   scale={scale}
                   renderTextLayer={true}
-                  renderAnnotationLayer={false}
+                  renderAnnotationLayer={true}
                   className="shadow-lg mx-auto"
                 />
                 <div className="text-center mt-2 text-sm text-gray-500">
@@ -173,7 +264,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfPath }) => {
                 pageNumber={pageNumber}
                 scale={scale}
                 renderTextLayer={true}
-                renderAnnotationLayer={false}
+                renderAnnotationLayer={true}
                 className="shadow-lg"
               />
             </div>

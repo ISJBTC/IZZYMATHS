@@ -1,0 +1,7 @@
+
+# This file ensures the pdfs directory is included in git
+# Place your PDF files in the following structure:
+# 
+# /pdfs/linearAlgebra/chapter1.pdf
+# /pdfs/linearAlgebra/chapter2.pdf
+# etc.
