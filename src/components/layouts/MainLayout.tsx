@@ -38,7 +38,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             </svg>
           </button>
           <Link to="/" className="flex items-center">
-            <span className="text-xl font-bold text-math-primary">MathMentor</span>
+            <span className="text-xl font-bold text-math-primary">MATHPATH</span>
           </Link>
         </div>
         <div className="flex-1 mx-4 max-w-3xl relative hidden md:block">

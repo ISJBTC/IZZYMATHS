@@ -28,7 +28,7 @@ const Subscription: React.FC = () => {
       setIsProcessing(false);
       toast({
         title: "Subscription activated",
-        description: "You now have full access to MathMentor!",
+        description: "You now have full access to MATHPATH!",
       });
       // In a real app, we would update the user's subscription status
       navigate('/content');
