@@ -1,16 +1,13 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import PDFViewer from '@/components/PDFViewer';
-import { useToast } from '@/hooks/use-toast';
 
 const Content: React.FC = () => {
   const [topic, setTopic] = useState('linearAlgebra');
-  const [activeTab, setActiveTab] = useState('');
-  const { toast } = useToast();
 
   // Map topics to their display names and chapters
   const topics = {
@@ -52,22 +49,8 @@ const Content: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    // Set the default active tab when topic changes
-    const defaultTab = `${topic}_chapter1`;
-    setActiveTab(defaultTab);
-  }, [topic]);
-
   const handleTopicClick = (topicKey: keyof typeof topics) => {
     setTopic(topicKey);
-  };
-
-  const handleTabChange = (value: string) => {
-    setActiveTab(value);
-  };
-
-  const getPDFPath = (tabValue: string) => {
-    return `/pdfs/${tabValue.replace('_chapter', '/chapter')}.pdf`;
   };
 
   return (
@@ -97,7 +80,7 @@ const Content: React.FC = () => {
 
           {/* Main Content */}
           <div className="flex-1">
-            <Tabs value={activeTab} onValueChange={handleTabChange}>
+            <Tabs defaultValue={`${topic}_chapter1`}>
               <div className="bg-white rounded-t-lg shadow px-4 pt-4">
                 <h1 className="text-2xl font-bold mb-4 text-math-primary">{topics[topic as keyof typeof topics].displayName}</h1>
                 <TabsList>
@@ -114,13 +97,8 @@ const Content: React.FC = () => {
 
               <div className="mt-px">
                 {topics[topic as keyof typeof topics].chapters.map((_, index) => (
-                  <TabsContent 
-                    key={`${topic}_chapter${index + 1}`} 
-                    value={`${topic}_chapter${index + 1}`}
-                  >
-                    <PDFViewer 
-                      pdfPath={getPDFPath(`${topic}_chapter${index + 1}`)} 
-                    />
+                  <TabsContent key={`${topic}_chapter${index + 1}`} value={`${topic}_chapter${index + 1}`}>
+                    <PDFViewer pdfPath={`/pdfs/${topic}_chapter${index + 1}.pdf`} />
                   </TabsContent>
                 ))}
               </div>
