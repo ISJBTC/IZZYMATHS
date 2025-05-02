@@ -13,15 +13,15 @@ const Content: React.FC = () => {
   const topics = {
     linearAlgebra: {
       displayName: "Linear Algebra",
-      chapters: ["Chapter 1", "Chapter 2", "Chapter 3"]
+      chapters: ["Matrix Fundamentals", "Normal Form", "Row Echleon Form", "System of Equations", "Linear Transformations", "Eigen Values & Eigen Vectors", "Vector Space"]
     },
     diffEq: {
       displayName: "Differential Equations",
-      chapters: ["Chapter 1", "Chapter 2", "Chapter 3"]
+      chapters: ["Prerequisites", "ODE", "First Order ODE"]
     },
     calculusForEngineers: {
       displayName: "Calculus for Engineers",
-      chapters: ["Chapter 1", "Chapter 2", "Chapter 3"]
+      chapters: ["Prerequisites", "Reduction Formulae", "Gamma and Beta Function", "DUIS & Error Function"]
     },
     complexAnalysis: {
       displayName: "Complex Analysis",
