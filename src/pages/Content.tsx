@@ -39,6 +39,10 @@ const Content: React.FC = () => {
       displayName: "Numerical Methods for Engineers",
       chapters: ["Chapter 1", "Chapter 2", "Chapter 3"]
     },
+    engineeringVector: {
+      displayName: "Vector Calculus",
+      chapters: ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6"]
+    },
     engineeringPhysics: {
       displayName: "Engineering Physics",
       chapters: ["Chapter 1", "Chapter 2", "Chapter 3"]
