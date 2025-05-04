@@ -1,26 +1,36 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import PDFViewer from '@/components/PDFViewer';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 
 const Content: React.FC = () => {
   const [topic, setTopic] = useState('linearAlgebra');
-  const { user, isSubscriptionActive } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
-  // Map topics to their display names and chapters
+  const location = useLocation();
+  
+  // Get search parameters
+  const queryParams = new URLSearchParams(location.search);
+  const topicParam = queryParams.get('topic');
 
   useEffect(() => {
-    console.log(user)
+    // Redirect to subscription if not subscribed
     if (!user || !user.subscription_active) {
       navigate('/subscription');
     }
-  }, [user]);
+    
+    // Set topic from URL parameter if provided
+    if (topicParam && Object.keys(topics).includes(topicParam)) {
+      setTopic(topicParam);
+    }
+  }, [user, topicParam]);
+  
+  // Map topics to their display names and chapters
   const topics = {
     linearAlgebra: {
       displayName: "Linear Algebra",

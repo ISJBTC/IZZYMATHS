@@ -38,11 +38,32 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      toast({
-        title: "Searching for content",
-        description: `Looking for "${searchQuery}"`,
-      });
-      navigate(`/content?search=${encodeURIComponent(searchQuery)}`);
+      // Define available content topics
+      const availableTopics = [
+        'linearAlgebra', 'diffEq', 'calculusForEngineers', 'engineeringVector', 
+        'complexAnalysis', 'probStats', 'engineeringTransforms', 'numericalMethods',
+        'engineeringPhysics', 'engineeringChemistry'
+      ];
+      
+      // Check if search query matches any available content
+      const searchLower = searchQuery.toLowerCase();
+      const foundTopic = availableTopics.find(topic => 
+        topic.toLowerCase().includes(searchLower)
+      );
+      
+      if (foundTopic) {
+        toast({
+          title: "Content found",
+          description: `Navigating to ${foundTopic}`,
+        });
+        navigate(`/content?topic=${foundTopic}`);
+      } else {
+        toast({
+          title: "Content not found",
+          description: `No content matching "${searchQuery}" was found`,
+          variant: "destructive"
+        });
+      }
     }
   };
 

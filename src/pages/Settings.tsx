@@ -8,11 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { 
   Bell, 
-  Moon, 
-  Sun, 
   Shield, 
-  Eye, 
-  EyeOff,
   Smartphone
 } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
@@ -24,19 +20,9 @@ const Settings: React.FC = () => {
   const navigate = useNavigate();
 
   // Settings state
-  const [darkMode, setDarkMode] = useState(false);
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [pushNotifications, setPushNotifications] = useState(true);
   const [contentProtection, setContentProtection] = useState(true);
-
-  const handleDarkModeToggle = () => {
-    setDarkMode(!darkMode);
-    toast({
-      title: `${!darkMode ? "Dark" : "Light"} mode enabled`,
-      description: "Your preference has been saved.",
-    });
-    // Implementation for actual dark mode would go here
-  };
 
   const handleNotificationChange = (type: 'email' | 'push', value: boolean) => {
     if (type === 'email') {
@@ -82,28 +68,6 @@ const Settings: React.FC = () => {
         <h1 className="text-3xl font-bold mb-8">Settings</h1>
 
         <div className="space-y-8">
-          {/* Appearance Settings */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Appearance</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  {darkMode ? 
-                    <Moon className="h-5 w-5 text-math-primary" /> : 
-                    <Sun className="h-5 w-5 text-math-primary" />
-                  }
-                  <div>
-                    <p className="font-medium">Dark Mode</p>
-                    <p className="text-sm text-gray-500">Switch between light and dark themes</p>
-                  </div>
-                </div>
-                <Switch checked={darkMode} onCheckedChange={handleDarkModeToggle} />
-              </div>
-            </CardContent>
-          </Card>
-
           {/* Notification Settings */}
           <Card>
             <CardHeader>
