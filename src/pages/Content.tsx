@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -18,18 +17,6 @@ const Content: React.FC = () => {
   const queryParams = new URLSearchParams(location.search);
   const topicParam = queryParams.get('topic');
 
-  useEffect(() => {
-    // Redirect to subscription if not subscribed
-    if (!user || !user.subscription_active) {
-      navigate('/subscription');
-    }
-    
-    // Set topic from URL parameter if provided
-    if (topicParam && Object.keys(topics).includes(topicParam)) {
-      setTopic(topicParam);
-    }
-  }, [user, topicParam]);
-  
   // Map topics to their display names and chapters
   const topics = {
     linearAlgebra: {
@@ -73,6 +60,26 @@ const Content: React.FC = () => {
       chapters: ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6", "Chapter 7", "Chapter 8"]
     }
   };
+
+  useEffect(() => {
+    // Redirect to subscription if not subscribed
+    if (!user || !user.subscription_active) {
+      navigate('/subscription');
+      return;
+    }
+    
+    // Set topic from URL parameter if provided
+    if (topicParam) {
+      // Check if the topic exists in our topics object
+      if (topics.hasOwnProperty(topicParam)) {
+        setTopic(topicParam);
+      } else {
+        // If topic doesn't exist, show toast or redirect to 404
+        console.error(`Topic not found: ${topicParam}`);
+        navigate('/not-found');
+      }
+    }
+  }, [user, topicParam, navigate]);
 
   const handleTopicClick = (topicKey: keyof typeof topics) => {
     setTopic(topicKey);

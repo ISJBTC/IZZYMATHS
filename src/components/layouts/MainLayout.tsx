@@ -38,25 +38,35 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // Define available content topics
+      // Define available content topics with their display names for better matching
       const availableTopics = [
-        'linearAlgebra', 'diffEq', 'calculusForEngineers', 'engineeringVector', 
-        'complexAnalysis', 'probStats', 'engineeringTransforms', 'numericalMethods',
-        'engineeringPhysics', 'engineeringChemistry'
+        { key: 'linearAlgebra', display: 'Linear Algebra' },
+        { key: 'diffEq', display: 'Differential Equations' },
+        { key: 'calculusForEngineers', display: 'Calculus for Engineers' },
+        { key: 'engineeringVector', display: 'Vector Calculus' },
+        { key: 'complexAnalysis', display: 'Complex Analysis' },
+        { key: 'probStats', display: 'Probability and Statistics' },
+        { key: 'engineeringTransforms', display: 'Engineering Transforms' },
+        { key: 'numericalMethods', display: 'Numerical Methods for Engineers' },
+        { key: 'engineeringPhysics', display: 'Engineering Physics' },
+        { key: 'engineeringChemistry', display: 'Engineering Chemistry' }
       ];
       
-      // Check if search query matches any available content
       const searchLower = searchQuery.toLowerCase();
+      
+      // Search through both keys and display names
       const foundTopic = availableTopics.find(topic => 
-        topic.toLowerCase().includes(searchLower)
+        topic.key.toLowerCase().includes(searchLower) || 
+        topic.display.toLowerCase().includes(searchLower)
       );
       
       if (foundTopic) {
         toast({
           title: "Content found",
-          description: `Navigating to ${foundTopic}`,
+          description: `Navigating to ${foundTopic.display}`,
         });
-        navigate(`/content?topic=${foundTopic}`);
+        navigate(`/content?topic=${foundTopic.key}`);
+        setSearchQuery(''); // Clear search after navigating
       } else {
         toast({
           title: "Content not found",
