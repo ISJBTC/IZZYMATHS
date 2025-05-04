@@ -131,7 +131,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfPath }) => {
             onDocumentLoadSuccess(doc);
           }}
           loading={<div className="text-center py-10">Loading PDF...</div>}
-          error={<div className="text-center py-10 text-red-500">Coming Soon.</div>}
+          error={<div className="text-center py-10 text-red-500">Failed to load PDF.</div>}
           className="flex flex-col items-center"
         >
           {allPages ? (

@@ -85,7 +85,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                   <span className={cn("ml-3 text-sm font-medium", !sidebarOpen && "md:hidden")}>Learning Content</span>
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   to="/community"
                   className={cn(
@@ -96,8 +96,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                   <MessageSquare className="w-5 h-5" />
                   <span className={cn("ml-3 text-sm font-medium", !sidebarOpen && "md:hidden")}>Community</span>
                 </Link>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 <Link
                   to="/questions"
                   className={cn(
@@ -108,8 +108,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                   <FileText className="w-5 h-5" />
                   <span className={cn("ml-3 text-sm font-medium", !sidebarOpen && "md:hidden")}>Question Papers</span>
                 </Link>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 <Link
                   to="/subscription"
                   className={cn(
@@ -122,7 +122,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                   </svg>
                   <span className={cn("ml-3 text-sm font-medium", !sidebarOpen && "md:hidden")}>Subscription</span>
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </nav>
         </aside>

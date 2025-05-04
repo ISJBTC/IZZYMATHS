@@ -5,51 +5,62 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import PDFViewer from '@/components/PDFViewer';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
 
 const Content: React.FC = () => {
   const [topic, setTopic] = useState('linearAlgebra');
-
+  const { user, isSubscriptionActive } = useAuth();
+  const navigate = useNavigate();
   // Map topics to their display names and chapters
+
+  useEffect(() => {
+    console.log(user)
+    if (!user || !user.subscription_active) {
+      navigate('/subscription');
+    }
+  }, [user]);
   const topics = {
     linearAlgebra: {
       displayName: "Linear Algebra",
-      chapters: ["Matrix Fundamentals", "Normal Form", "Row Echleon Form", "System of Equations", "Linear Transformations", "Eigen Values & Eigen Vectors", "Vector Space"]
+      chapters: ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6", "Chapter 7", "Chapter 8"]
     },
     diffEq: {
       displayName: "Differential Equations",
-      chapters: ["Prerequisites", "ODE", "First Order ODE", "Applications of DE"]
+      chapters: ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6", "Chapter 7", "Chapter 8"]
     },
     calculusForEngineers: {
       displayName: "Calculus for Engineers",
-      chapters: ["Prerequisites", "Reduction Formulae", "Gamma and Beta Function", "DUIS & Error Function"]
-    },
-    complexAnalysis: {
-      displayName: "Complex Analysis",
-      chapters: ["Chapter 1", "Chapter 2"]
-    },
-    probStats: {
-      displayName: "Probability and Statistics",
-      chapters: ["Chapter 1", "Chapter 2", "Chapter 3"]
-    },
-    engineeringTransforms: {
-      displayName: "Engineering Transforms",
-      chapters: ["Chapter 1", "Chapter 2"]
-    },
-    numericalMethods: {
-      displayName: "Numerical Methods for Engineers",
-      chapters: ["Chapter 1", "Chapter 2", "Chapter 3"]
+      chapters: ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6", "Chapter 7", "Chapter 8"]
     },
     engineeringVector: {
       displayName: "Vector Calculus",
-      chapters: ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6"]
+      chapters: ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6", "Chapter 7", "Chapter 8"]
+    },
+    complexAnalysis: {
+      displayName: "Complex Analysis",
+      chapters: ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6", "Chapter 7", "Chapter 8"]
+    },
+    probStats: {
+      displayName: "Probability and Statistics",
+      chapters: ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6", "Chapter 7", "Chapter 8"]
+    },
+    engineeringTransforms: {
+      displayName: "Engineering Transforms",
+      chapters: ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6", "Chapter 7", "Chapter 8"]
+    },
+    numericalMethods: {
+      displayName: "Numerical Methods for Engineers",
+      chapters: ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6", "Chapter 7", "Chapter 8"]
     },
     engineeringPhysics: {
       displayName: "Engineering Physics",
-      chapters: ["Chapter 1", "Chapter 2", "Chapter 3"]
+      chapters: ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6", "Chapter 7", "Chapter 8"]
     },
     engineeringChemistry: {
       displayName: "Engineering Chemistry",
-      chapters: ["Chapter 1", "Chapter 2", "Chapter 3"]
+      chapters: ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6", "Chapter 7", "Chapter 8"]
     }
   };
 

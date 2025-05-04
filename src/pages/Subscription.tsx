@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -8,31 +7,121 @@ import { Check, Lock } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
+import axios from 'axios';
 
 const Subscription: React.FC = () => {
   const [isProcessing, setIsProcessing] = useState(false);
-  const { user } = useAuth();
+  const { user, startSubscription } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const handleSubscribe = () => {
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
+  const handleSubscribe = async () => {
     if (!user) {
       navigate('/login');
       return;
     }
 
+    // const options = {
+    //   key: import.meta.env.VITE_RAZORPAY_KEY, // Razorpay Key from .env
+    //   amount: 10000, // 100 INR in paise
+    //   currency: 'INR',
+    //   name: 'MathPath',
+    //   description: 'Monthly Subscription',
+    //   handler: async function (response: any) {
+    //     try {
+    //       // Optional: Send response.razorpay_payment_id to your backend to verify payment
+    //       await fetch('http://localhost:5000/verify-payment', {
+    //         method: 'POST',
+    //         headers: { 'Content-Type': 'application/json' },
+    //         body: JSON.stringify({ payment_id: response.razorpay_payment_id }),
+    //       });
+
+    //       startSubscription(); // Save subscription state
+    //       toast({
+    //         title: 'Subscription Activated',
+    //         description: 'You now have full access to MATHPATH!',
+    //       });
+    //       navigate('/content');
+    //     } catch (error) {
+    //       toast({
+    //         title: 'Payment Verification Failed',
+    //         description: 'Please contact support.',
+    //       });
+    //     }
+    //   },
+    //   prefill: {
+    //     name: user.name,
+    //     email: user.email,
+    //   },
+    //   theme: {
+    //     color: '#0a75ad',
+    //   },
+    // };
+
     setIsProcessing(true);
-    
-    // Simulate payment processing
-    setTimeout(() => {
-      setIsProcessing(false);
-      toast({
-        title: "Subscription activated",
-        description: "You now have full access to MATHPATH!",
+
+    try {
+      const res = await axios.post('http://localhost:5000/api/create-order', {
+        id: user.id,
+        name: user.name,
+        email: user.email
       });
-      // In a real app, we would update the user's subscription status
-      navigate('/content');
-    }, 2000);
+      const { orderId, amount, currency, key ,id} = res.data;
+
+      const options: any = {
+        key,
+        amount,
+        currency,
+        name: "My App",
+        description: "Monthly Subscription",
+        order_id: orderId,
+        handler: async function (response: any) {
+          try {
+            const verifyRes = await axios.post('http://localhost:5000/api/verify-payment', {
+              id: id,
+              paymentId: response.razorpay_payment_id,
+              orderId: response.razorpay_order_id,
+              signature: response.razorpay_signature
+            });
+            console.log('HIII')
+            console.log(verifyRes)
+            if (verifyRes.data.subscription_active) {
+              toast({
+                title: "Payment successful",
+                description: `Access until ${verifyRes.data.expires_at}`
+              });
+              
+              await startSubscription(id);
+              navigate('/content');
+            }
+          } catch (err) {
+            toast({ title: "Verification failed", variant: "destructive" });
+          }
+        },
+        prefill: {
+          name: user.name,
+          email: user.email
+        },
+        theme: {
+          color: "#3399cc"
+        }
+      };
+
+      const razor = new (window as any).Razorpay(options);
+      razor.open();
+    } catch (error) {
+      console.error(error);
+      toast({ title: "Payment setup failed", variant: "destructive" });
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const features = [
@@ -79,31 +168,39 @@ const Subscription: React.FC = () => {
             </ul>
           </CardContent>
           <CardFooter className="flex flex-col items-center pb-8">
-            <Button 
-              size="lg" 
-              className="w-full" 
-              onClick={handleSubscribe}
-              disabled={isProcessing}
-            >
-              {isProcessing ? (
-                <span className="flex items-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Processing...
-                </span>
-              ) : (
-                <span className="flex items-center">
-                  <Lock className="h-5 w-5 mr-2" />
-                  Subscribe Now
-                </span>
-              )}
-            </Button>
-            <p className="mt-4 text-sm text-gray-500">
-              Secure payment processing. Your data is protected.
-            </p>
-          </CardFooter>
+  {user?.subscription_active ? (
+    <Button disabled size="lg" className="w-full bg-green-600 hover:bg-green-600 cursor-default">
+      ✅ Subscribed
+    </Button>
+  ) : (
+    <Button 
+      size="lg" 
+      className="w-full" 
+      onClick={handleSubscribe}
+      disabled={isProcessing}
+    >
+      {isProcessing ? (
+        <span className="flex items-center">
+          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Processing...
+        </span>
+      ) : (
+        <span className="flex items-center">
+          <Lock className="h-5 w-5 mr-2" />
+          Subscribe Now
+        </span>
+      )}
+    </Button>
+  )}
+
+  <p className="mt-4 text-sm text-gray-500">
+    Secure payment processing. Your data is protected.
+  </p>
+</CardFooter>
+
         </Card>
       </div>
     </MainLayout>

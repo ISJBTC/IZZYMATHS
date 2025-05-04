@@ -58,12 +58,12 @@ const Index: React.FC = () => {
       {/* Features */}
       <section className="py-16 bg-gray-50">
         <div className="container max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-math-primary">
+          {/* <h2 className="text-3xl font-bold text-center mb-12 text-math-primary">
             Why Choose Our Platform
-          </h2>
+          </h2> */}
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="border border-gray-200">
+            {/* <Card className="border border-gray-200">
               <CardHeader>
                 <div className="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                   <Book className="text-math-primary h-6 w-6" />
@@ -83,9 +83,9 @@ const Index: React.FC = () => {
                   Explore Content
                 </Button>
               </CardFooter>
-            </Card>
+            </Card> */}
             
-            <Card className="border border-gray-200">
+            {/* <Card className="border border-gray-200">
               <CardHeader>
                 <div className="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                   <FileText className="text-math-primary h-6 w-6" />
@@ -105,9 +105,9 @@ const Index: React.FC = () => {
                   Browse Questions
                 </Button>
               </CardFooter>
-            </Card>
+            </Card> */}
             
-            <Card className="border border-gray-200">
+            {/* <Card className="border border-gray-200">
               <CardHeader>
                 <div className="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                   <MessageSquare className="text-math-primary h-6 w-6" />
@@ -127,13 +127,13 @@ const Index: React.FC = () => {
                   Join Community
                 </Button>
               </CardFooter>
-            </Card>
+            </Card> */}
           </div>
         </div>
       </section>
 
       {/* Subscription CTA */}
-      <section className="py-16 bg-blue-50">
+      {/* <section className="py-16 bg-blue-50">
         <div className="container max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-6 text-math-primary">
             Unlock Full Access
@@ -150,7 +150,7 @@ const Index: React.FC = () => {
             View Subscription Plans
           </Button>
         </div>
-      </section>
+      </section> */}
     </MainLayout>
   );
 };

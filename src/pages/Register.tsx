@@ -16,6 +16,7 @@ const Register: React.FC = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [collegeName, setCollegeName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { register } = useAuth();
   const { toast } = useToast();
@@ -45,7 +46,7 @@ const Register: React.FC = () => {
     setIsLoading(true);
 
     try {
-      await register(name, email, password);
+      await register(name, email, password, collegeName);
       toast({
         title: "Registration successful",
         description: "Your account has been created successfully.",
@@ -137,7 +138,17 @@ const Register: React.FC = () => {
                   required
                 />
               </div>
-              
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword">Institute Name</Label>
+                <Input
+                  id="collegeName"
+                  type="name"
+                  placeholder="Enter College Name"
+                  value={collegeName}
+                  onChange={(e) => setCollegeName(e.target.value)}
+                  required
+                />
+              </div>
               <div className="flex items-center space-x-2">
                 <Checkbox 
                   id="terms" 
