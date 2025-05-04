@@ -1,6 +1,6 @@
+
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
-import { log } from 'console';
 
 interface User {
   id: string;
@@ -19,6 +19,8 @@ interface AuthContextType {
   isLoading: boolean;
   startSubscription: (id:string) => Promise<void>;
   isSubscriptionActive: () => boolean;
+  forgotPassword: (email: string) => Promise<void>;
+  resetPassword: (token: string, password: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -47,7 +49,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoading(true);
     try {
       const response = await axios.post('http://localhost:5000/api/login', { email, password });
-      const { id, name, subscription_active, subscription_expiry ,collegeName} = response.data;
+      const { id, name, subscription_active, subscription_expiry, collegeName } = response.data;
   
       setUser({
         id,
@@ -68,7 +70,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const register = async (name: string, email: string, password: string, collegeName: string) => {
     setIsLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/api/register', { name, email, password, collegeName });
+      const response = await axios.post('http://localhost:5000/api/register', { 
+        name, 
+        email, 
+        password, 
+        collegeName,
+        sendEmail: true // Tell the backend to send welcome email
+      });
   
       const { id, subscription_active, subscription_expiry, college_name } = response.data;
   
@@ -89,6 +97,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const forgotPassword = async (email: string) => {
+    try {
+      await axios.post('http://localhost:5000/api/forgot-password', { email });
+    } catch (error: any) {
+      console.error("Forgot password request failed:", error.response?.data || error.message);
+      throw new Error(error.response?.data?.message || "Failed to process request");
+    }
+  };
+  
+  const resetPassword = async (token: string, password: string) => {
+    try {
+      await axios.post('http://localhost:5000/api/reset-password', { token, password });
+    } catch (error: any) {
+      console.error("Password reset failed:", error.response?.data || error.message);
+      throw new Error(error.response?.data?.message || "Failed to reset password");
+    }
+  };
+
   const signOut = () => {
     setUser(null);
   };
@@ -96,7 +122,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const startSubscription = async (id:string) => {
     if (!user) return;
     try {
-      const response = await axios.post('http://localhost:5000/api/check-subscription', { id  });
+      const response = await axios.post('http://localhost:5000/api/check-subscription', { 
+        id,
+        sendEmail: true // Tell the backend to send subscription confirmation email
+      });
       const { subscription_active, subscription_expiry } = response.data;
       setUser(prevUser => prevUser ? { ...prevUser, subscription_active: subscription_active, subscription_expiry: subscription_expiry } : null);
     } catch (error) {
@@ -105,13 +134,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const isSubscriptionActive = () => {
-    
     if (!user || !user.subscription_active || !user.subscription_expiry) return false;
     return new Date(user.subscription_expiry) > new Date();
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, signOut, isLoading, startSubscription, isSubscriptionActive }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      login, 
+      register, 
+      signOut, 
+      isLoading, 
+      startSubscription, 
+      isSubscriptionActive,
+      forgotPassword,
+      resetPassword 
+    }}>
       {children}
     </AuthContext.Provider>
   );

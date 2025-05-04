@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
@@ -40,9 +40,6 @@ const AuthStatus: React.FC = () => {
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link to="/subscription">Subscription</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to="/settings">Settings</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={signOut}>Sign out</DropdownMenuItem>

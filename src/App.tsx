@@ -12,6 +12,9 @@ import Content from "./pages/Content";
 import Community from "./pages/Community";
 import Questions from "./pages/Questions";
 import Subscription from "./pages/Subscription";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +33,9 @@ const App = () => (
           <Route path="/community" element={<Community />} />
           <Route path="/questions" element={<Questions />} />
           <Route path="/subscription" element={<Subscription />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
