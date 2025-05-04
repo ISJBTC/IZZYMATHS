@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -40,24 +39,25 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     if (searchQuery.trim()) {
       // Define available content topics with their display names for better matching
       const availableTopics = [
-        { key: 'linearAlgebra', display: 'Linear Algebra' },
-        { key: 'diffEq', display: 'Differential Equations' },
-        { key: 'calculusForEngineers', display: 'Calculus for Engineers' },
-        { key: 'engineeringVector', display: 'Vector Calculus' },
-        { key: 'complexAnalysis', display: 'Complex Analysis' },
-        { key: 'probStats', display: 'Probability and Statistics' },
-        { key: 'engineeringTransforms', display: 'Engineering Transforms' },
-        { key: 'numericalMethods', display: 'Numerical Methods for Engineers' },
-        { key: 'engineeringPhysics', display: 'Engineering Physics' },
-        { key: 'engineeringChemistry', display: 'Engineering Chemistry' }
+        { key: 'linearAlgebra', display: 'Linear Algebra', keywords: ['vectors', 'matrices', 'determinants', 'eigenvalues'] },
+        { key: 'diffEq', display: 'Differential Equations', keywords: ['derivatives', 'integrals', 'ordinary', 'partial'] },
+        { key: 'calculusForEngineers', display: 'Calculus for Engineers', keywords: ['limits', 'derivatives', 'integrals', 'applications'] },
+        { key: 'engineeringVector', display: 'Vector Calculus', keywords: ['gradient', 'divergence', 'curl', 'line integrals'] },
+        { key: 'complexAnalysis', display: 'Complex Analysis', keywords: ['complex numbers', 'functions', 'contour integrals'] },
+        { key: 'probStats', display: 'Probability and Statistics', keywords: ['random variables', 'distributions', 'hypothesis testing'] },
+        { key: 'engineeringTransforms', display: 'Engineering Transforms', keywords: ['laplace', 'fourier', 'z-transform'] },
+        { key: 'numericalMethods', display: 'Numerical Methods for Engineers', keywords: ['approximation', 'interpolation', 'numerical integration'] },
+        { key: 'engineeringPhysics', display: 'Engineering Physics', keywords: ['mechanics', 'thermodynamics', 'electromagnetism'] },
+        { key: 'engineeringChemistry', display: 'Engineering Chemistry', keywords: ['stoichiometry', 'thermochemistry', 'kinetics'] }
       ];
       
       const searchLower = searchQuery.toLowerCase();
       
-      // Search through both keys and display names
+      // Search through topic keys, display names, and keywords
       const foundTopic = availableTopics.find(topic => 
         topic.key.toLowerCase().includes(searchLower) || 
-        topic.display.toLowerCase().includes(searchLower)
+        topic.display.toLowerCase().includes(searchLower) ||
+        topic.keywords.some(keyword => keyword.toLowerCase().includes(searchLower))
       );
       
       if (foundTopic) {
@@ -65,7 +65,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           title: "Content found",
           description: `Navigating to ${foundTopic.display}`,
         });
-        navigate(`/content?topic=${foundTopic.key}`);
+        navigate(`/content?topic=${foundTopic.key}&search=${searchQuery}`);
         setSearchQuery(''); // Clear search after navigating
       } else {
         toast({

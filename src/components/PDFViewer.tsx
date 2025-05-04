@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { Button } from '@/components/ui/button';
@@ -9,9 +10,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/b
 
 interface PDFViewerProps {
   pdfPath: string;
+  searchTerm?: string | null;
 }
 
-const PDFViewer: React.FC<PDFViewerProps> = ({ pdfPath }) => {
+const PDFViewer: React.FC<PDFViewerProps> = ({ pdfPath, searchTerm }) => {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [scale, setScale] = useState(1);
@@ -20,9 +22,22 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfPath }) => {
   const [pdf, setPdf] = useState<any>(null);
   const { toast } = useToast();
   const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Apply URL search term to local search
+  useEffect(() => {
+    if (searchTerm) {
+      setSearchText(searchTerm);
+      // Search will be triggered after PDF loads
+    }
+  }, [searchTerm]);
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
+    
+    // If we have a search term from URL, perform search after PDF is loaded
+    if (searchTerm && pdf) {
+      setTimeout(() => handleSearch(), 500);
+    }
   };
 
   const handleZoomIn = () => {
