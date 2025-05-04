@@ -20,7 +20,7 @@ const Community: React.FC = () => {
         description: "Please sign in to create a new topic.",
         variant: "destructive",
       });
-    } else if (!user.isSubscribed) {
+    } else if (!user.subscription_active) {
       toast({
         title: "Subscription required",
         description: "Please subscribe to participate in the community.",
