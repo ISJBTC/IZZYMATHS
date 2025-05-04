@@ -17,7 +17,7 @@ const Content: React.FC = () => {
     },
     diffEq: {
       displayName: "Differential Equations",
-      chapters: ["Prerequisites", "ODE", "First Order ODE"]
+      chapters: ["Prerequisites", "ODE", "First Order ODE", "Applications of DE"]
     },
     calculusForEngineers: {
       displayName: "Calculus for Engineers",
