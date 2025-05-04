@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { log } from 'console';
 
 interface User {
   id: string;
@@ -64,12 +65,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const register = async (name: string, email: string, password: string, collegeName:string) => {
+  const register = async (name: string, email: string, password: string, collegeName: string) => {
     setIsLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/api/register', { name, email, password, collegeName  });
+      const response = await axios.post('http://localhost:5000/api/register', { name, email, password, collegeName });
   
-      const { id, subscription_active, subscription_expiry,college_name } = response.data;
+      const { id, subscription_active, subscription_expiry, college_name } = response.data;
   
       setUser({
         id,
@@ -77,7 +78,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         email,
         subscription_active,
         subscription_expiry,
-        collegeName
+        collegeName: college_name 
       });
       
     } catch (error: any) {
@@ -95,10 +96,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const startSubscription = async (id:string) => {
     if (!user) return;
     try {
-      console.log(id)
       const response = await axios.post('http://localhost:5000/api/check-subscription', { id  });
-      const { active, expires_at } = response.data;
-      setUser(prevUser => prevUser ? { ...prevUser, subscription_active: active, subscription_expiry: expires_at } : null);
+      const { subscription_active, subscription_expiry } = response.data;
+      setUser(prevUser => prevUser ? { ...prevUser, subscription_active: subscription_active, subscription_expiry: subscription_expiry } : null);
     } catch (error) {
       console.error("Failed to fetch subscription status", error);
     }

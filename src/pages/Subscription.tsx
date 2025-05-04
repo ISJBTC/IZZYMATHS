@@ -90,8 +90,6 @@ const Subscription: React.FC = () => {
               orderId: response.razorpay_order_id,
               signature: response.razorpay_signature
             });
-            console.log('HIII')
-            console.log(verifyRes)
             if (verifyRes.data.subscription_active) {
               toast({
                 title: "Payment successful",
