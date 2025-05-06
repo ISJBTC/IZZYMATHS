@@ -123,13 +123,13 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             <div className="flex flex-col items-start">
               <div className="flex items-center">
                 <img 
-                  src="/lovable-uploads/91fded6f-c872-4df6-b0f7-cc51f64d9e1e.png" 
+                  src="/lovable-uploads/36f8e087-4855-4f2b-ab75-719fafc7e3c7.png" 
                   alt="MATHPATH Logo" 
-                  className="h-10 w-10 mr-2" 
+                  className="h-10 w-10 mr-2 rounded-full" 
                 />
                 <span className="text-xl font-bold text-math-primary">MATHPATH</span>
               </div>
-              <span className="text-xs text-gray-500 italic">Road to Learn Mathematics</span>
+              <span className="text-xs text-gray-500 italic">Math That Makes Minds</span>
             </div>
           </Link>
         </div>

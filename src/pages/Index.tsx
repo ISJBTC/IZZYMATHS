@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/layouts/MainLayout';
@@ -19,9 +18,9 @@ const Index: React.FC = () => {
           <div className="max-w-3xl flex flex-col md:flex-row items-center gap-8">
             <div className="flex-shrink-0">
               <img 
-                src="/lovable-uploads/91fded6f-c872-4df6-b0f7-cc51f64d9e1e.png" 
+                src="/lovable-uploads/36f8e087-4855-4f2b-ab75-719fafc7e3c7.png" 
                 alt="MATHPATH Logo" 
-                className="w-48 h-48 mb-4 md:mb-0" 
+                className="w-48 h-48 mb-4 md:mb-0 rounded-full" 
               />
             </div>
             <div>
@@ -33,7 +32,7 @@ const Index: React.FC = () => {
                 question papers, and a supportive math community.
               </p>
               <p className="text-md italic mb-6 text-blue-200">
-                Road to Learn Mathematics
+                Math That Makes Minds
               </p>
               {!user ? (
                 <div className="flex flex-wrap gap-4">
