@@ -120,7 +120,17 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             </svg>
           </button>
           <Link to="/" className="flex items-center">
-            <span className="text-xl font-bold text-math-primary">MATHPATH</span>
+            <div className="flex flex-col items-start">
+              <div className="flex items-center">
+                <img 
+                  src="/lovable-uploads/91fded6f-c872-4df6-b0f7-cc51f64d9e1e.png" 
+                  alt="MATHPATH Logo" 
+                  className="h-10 w-10 mr-2" 
+                />
+                <span className="text-xl font-bold text-math-primary">MATHPATH</span>
+              </div>
+              <span className="text-xs text-gray-500 italic">Road to Learn Mathematics</span>
+            </div>
           </Link>
         </div>
         <div className="flex-1 mx-4 max-w-3xl relative hidden md:block">

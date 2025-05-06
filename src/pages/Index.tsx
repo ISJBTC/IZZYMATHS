@@ -16,41 +16,53 @@ const Index: React.FC = () => {
       {/* Hero section */}
       <section className="bg-gradient-to-b from-blue-900 to-blue-700 text-white py-16">
         <div className="container max-w-6xl mx-auto px-4">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
-              Master Mathematics for Engineering
-            </h1>
-            <p className="text-lg md:text-xl mb-8 text-blue-100">
-              Comprehensive learning platform with detailed step-by-step solutions, 
-              question papers, and a supportive math community.
-            </p>
-            {!user ? (
-              <div className="flex flex-wrap gap-4">
+          <div className="max-w-3xl flex flex-col md:flex-row items-center gap-8">
+            <div className="flex-shrink-0">
+              <img 
+                src="/lovable-uploads/91fded6f-c872-4df6-b0f7-cc51f64d9e1e.png" 
+                alt="MATHPATH Logo" 
+                className="w-48 h-48 mb-4 md:mb-0" 
+              />
+            </div>
+            <div>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
+                Master Mathematics for Engineering
+              </h1>
+              <p className="text-lg md:text-xl mb-2 text-blue-100">
+                Comprehensive learning platform with detailed step-by-step solutions, 
+                question papers, and a supportive math community.
+              </p>
+              <p className="text-md italic mb-6 text-blue-200">
+                Road to Learn Mathematics
+              </p>
+              {!user ? (
+                <div className="flex flex-wrap gap-4">
+                  <Button 
+                    size="lg" 
+                    className="bg-white text-blue-900 hover:bg-blue-100"
+                    onClick={() => navigate('/register')}
+                  >
+                    Get Started
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    className="border-white text-white hover:bg-blue-800"
+                    onClick={() => navigate('/login')}
+                  >
+                    Sign In
+                  </Button>
+                </div>
+              ) : (
                 <Button 
                   size="lg" 
                   className="bg-white text-blue-900 hover:bg-blue-100"
-                  onClick={() => navigate('/register')}
+                  onClick={() => navigate('/content')}
                 >
-                  Get Started
+                  Explore Content
                 </Button>
-                <Button 
-                  variant="outline" 
-                  size="lg" 
-                  className="border-white text-white hover:bg-blue-800"
-                  onClick={() => navigate('/login')}
-                >
-                  Sign In
-                </Button>
-              </div>
-            ) : (
-              <Button 
-                size="lg" 
-                className="bg-white text-blue-900 hover:bg-blue-100"
-                onClick={() => navigate('/content')}
-              >
-                Explore Content
-              </Button>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </section>
