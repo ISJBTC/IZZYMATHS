@@ -1,10 +1,11 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/hooks/useAuth';
-import { Book, FileText, MessageSquare } from 'lucide-react';
+import { Book, FileText, MessageSquare, Users } from 'lucide-react';
 
 const Index: React.FC = () => {
   const { user } = useAuth();
@@ -53,13 +54,23 @@ const Index: React.FC = () => {
                   </Button>
                 </div>
               ) : (
-                <Button 
-                  size="lg" 
-                  className="bg-white text-blue-900 hover:bg-blue-100"
-                  onClick={() => navigate('/content')}
-                >
-                  Explore Content
-                </Button>
+                <div className="flex flex-wrap gap-4">
+                  <Button 
+                    size="lg" 
+                    className="bg-white text-blue-900 hover:bg-blue-100"
+                    onClick={() => navigate('/content')}
+                  >
+                    Explore Content
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    className="border-white text-white hover:bg-blue-800"
+                    onClick={() => navigate('/about')}
+                  >
+                    About Us
+                  </Button>
+                </div>
               )}
             </div>
           </div>

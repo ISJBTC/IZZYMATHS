@@ -15,6 +15,7 @@ import Profile from './pages/Profile';
 import Community from './pages/Community';
 import Questions from './pages/Questions';
 import Settings from './pages/Settings';
+import AboutUs from './pages/AboutUs';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path="/subscription" element={<Subscription />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/about" element={<AboutUs />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="*" element={<NotFound />} />
