@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/layouts/MainLayout';
@@ -31,6 +32,7 @@ const Index: React.FC = () => {
                 src="/lovable-uploads/36f8e087-4855-4f2b-ab75-719fafc7e3c7.png" 
                 alt="MATHPATH Logo" 
                 className="w-48 h-48 mb-4 md:mb-0" 
+                style={{ borderRadius: '50%' }}
               />
             </div>
             <div>
@@ -91,8 +93,8 @@ const Index: React.FC = () => {
         <div className="container mx-auto px-4 text-center">
           <div className="inline-flex items-center gap-2 bg-blue-50 px-5 py-2 rounded-full">
             <Users className="h-5 w-5 text-blue-600" />
-            <span className="font-medium">{visitorCount.toLocaleString()}+ visitors</span>
-            <span className="text-sm text-gray-500">have used our platform</span>
+            <span className="font-medium">{visitorCount.toLocaleString()}</span>
+            <span className="text-sm text-gray-500">visitors have used our platform</span>
           </div>
         </div>
       </section>

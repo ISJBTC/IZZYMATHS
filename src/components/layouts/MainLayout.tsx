@@ -126,6 +126,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                   src="/lovable-uploads/36f8e087-4855-4f2b-ab75-719fafc7e3c7.png" 
                   alt="MATHPATH Logo" 
                   className="h-10 w-10 mr-2" 
+                  style={{ borderRadius: '50%' }}
                 />
                 <span className="text-xl font-bold text-math-primary">MATHPATH</span>
               </div>
