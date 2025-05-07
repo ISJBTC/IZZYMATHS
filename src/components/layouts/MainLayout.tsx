@@ -221,8 +221,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                 <Link
                   to="/"
                   className={cn(
-                    "flex items-center py-3 px-4 rounded-md hover:bg-blue-50 hover:text-math-primary transition-colors",
-                    location.pathname === "/" ? "bg-blue-50 text-math-primary" : "text-gray-700"
+                    "flex items-center py-3 px-4 rounded-md hover:bg-gray-100 transition-colors",
+                    location.pathname === "/" ? "bg-gray-100 text-math-primary" : "text-gray-700"
                   )}
                 >
                   <Book className="w-5 h-5" />
@@ -233,8 +233,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                 <Link
                   to="/about"
                   className={cn(
-                    "flex items-center py-3 px-4 rounded-md hover:bg-blue-50 hover:text-math-primary transition-colors",
-                    location.pathname === "/about" ? "bg-blue-50 text-math-primary" : "text-gray-700"
+                    "flex items-center py-3 px-4 rounded-md hover:bg-gray-100 transition-colors",
+                    location.pathname === "/about" ? "bg-gray-100 text-math-primary" : "text-gray-700"
                   )}
                 >
                   <Users className="w-5 h-5" />
@@ -245,8 +245,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                 <Link
                   to="/subscription"
                   className={cn(
-                    "flex items-center py-3 px-4 rounded-md hover:bg-blue-50 hover:text-math-primary transition-colors",
-                    location.pathname === "/subscription" ? "bg-blue-50 text-math-primary" : "text-gray-700"
+                    "flex items-center py-3 px-4 rounded-md hover:bg-gray-100 transition-colors",
+                    location.pathname === "/subscription" ? "bg-gray-100 text-math-primary" : "text-gray-700"
                   )}
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -259,8 +259,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                 <Link
                   to="/settings"
                   className={cn(
-                    "flex items-center py-3 px-4 rounded-md hover:bg-blue-50 hover:text-math-primary transition-colors",
-                    location.pathname === "/settings" ? "bg-blue-50 text-math-primary" : "text-gray-700"
+                    "flex items-center py-3 px-4 rounded-md hover:bg-gray-100 transition-colors",
+                    location.pathname === "/settings" ? "bg-gray-100 text-math-primary" : "text-gray-700"
                   )}
                 >
                   <Settings className="w-5 h-5" />
@@ -271,8 +271,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                 <Link
                   to="/profile"
                   className={cn(
-                    "flex items-center py-3 px-4 rounded-md hover:bg-blue-50 hover:text-math-primary transition-colors",
-                    location.pathname === "/profile" ? "bg-blue-50 text-math-primary" : "text-gray-700"
+                    "flex items-center py-3 px-4 rounded-md hover:bg-gray-100 transition-colors",
+                    location.pathname === "/profile" ? "bg-gray-100 text-math-primary" : "text-gray-700"
                   )}
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
