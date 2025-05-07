@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -10,18 +9,28 @@ import { Book, FileText, MessageSquare, Users } from 'lucide-react';
 const Index: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [visitorCount, setVisitorCount] = useState(1000);
+
+  useEffect(() => {
+    // Simulate visitor count increase
+    const timer = setInterval(() => {
+      setVisitorCount(prev => prev + Math.floor(Math.random() * 3));
+    }, 60000); // Increase count every minute
+    
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <MainLayout>
-      {/* Hero section */}
-      <section className="bg-gradient-to-b from-blue-900 to-blue-700 text-white py-16">
+      {/* Hero section with updated blue gradient matching logo */}
+      <section className="bg-gradient-to-b from-blue-700 to-blue-600 text-white py-16">
         <div className="container max-w-6xl mx-auto px-4">
           <div className="max-w-3xl flex flex-col md:flex-row items-center gap-8">
             <div className="flex-shrink-0">
               <img 
                 src="/lovable-uploads/36f8e087-4855-4f2b-ab75-719fafc7e3c7.png" 
                 alt="MATHPATH Logo" 
-                className="w-48 h-48 mb-4 md:mb-0 rounded-full" 
+                className="w-48 h-48 mb-4 md:mb-0" 
               />
             </div>
             <div>
@@ -39,7 +48,7 @@ const Index: React.FC = () => {
                 <div className="flex flex-wrap gap-4">
                   <Button 
                     size="lg" 
-                    className="bg-white text-blue-900 hover:bg-blue-100"
+                    className="bg-white text-blue-700 hover:bg-blue-100"
                     onClick={() => navigate('/register')}
                   >
                     Get Started
@@ -47,7 +56,7 @@ const Index: React.FC = () => {
                   <Button 
                     variant="outline" 
                     size="lg" 
-                    className="border-white text-white hover:bg-blue-800"
+                    className="border-white text-white hover:bg-blue-600"
                     onClick={() => navigate('/login')}
                   >
                     Sign In
@@ -57,7 +66,7 @@ const Index: React.FC = () => {
                 <div className="flex flex-wrap gap-4">
                   <Button 
                     size="lg" 
-                    className="bg-white text-blue-900 hover:bg-blue-100"
+                    className="bg-white text-blue-700 hover:bg-blue-100"
                     onClick={() => navigate('/content')}
                   >
                     Explore Content
@@ -65,7 +74,7 @@ const Index: React.FC = () => {
                   <Button 
                     variant="outline" 
                     size="lg" 
-                    className="border-white text-white hover:bg-blue-800"
+                    className="border-white text-white hover:bg-blue-600"
                     onClick={() => navigate('/about')}
                   >
                     About Us
@@ -73,6 +82,17 @@ const Index: React.FC = () => {
                 </div>
               )}
             </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Visitor counter section */}
+      <section className="py-8 bg-white border-b border-gray-100">
+        <div className="container mx-auto px-4 text-center">
+          <div className="inline-flex items-center gap-2 bg-blue-50 px-5 py-2 rounded-full">
+            <Users className="h-5 w-5 text-blue-600" />
+            <span className="font-medium">{visitorCount.toLocaleString()}+ visitors</span>
+            <span className="text-sm text-gray-500">have used our platform</span>
           </div>
         </div>
       </section>

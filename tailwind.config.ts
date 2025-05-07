@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -64,12 +63,12 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				math: {
-					primary: '#1E3A8A', // deep blue
-					secondary: '#3B82F6', // lighter blue
-					accent: '#8B5CF6', // purple accent for math symbols
-					highlight: '#FBBF24', // yellow for highlighting
-					background: '#F8FAFC', // light background for content
-					muted: '#94A3B8', // muted text
+					primary: '#1E40AF', // Updated to a more professional deeper blue
+					secondary: '#3B82F6', // Royal blue for secondary elements
+					accent: '#60A5FA', // Lighter blue accent for math symbols
+					highlight: '#93C5FD', // Soft blue for highlighting
+					background: '#F8FAFC', // Light background for content
+					muted: '#94A3B8', // Muted text
 				}
 			},
 			borderRadius: {

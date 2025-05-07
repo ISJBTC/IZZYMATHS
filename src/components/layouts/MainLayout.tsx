@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -126,7 +125,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                 <img 
                   src="/lovable-uploads/36f8e087-4855-4f2b-ab75-719fafc7e3c7.png" 
                   alt="MATHPATH Logo" 
-                  className="h-10 w-10 mr-2 rounded-full" 
+                  className="h-10 w-10 mr-2" 
                 />
                 <span className="text-xl font-bold text-math-primary">MATHPATH</span>
               </div>
