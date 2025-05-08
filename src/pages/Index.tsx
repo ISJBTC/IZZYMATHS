@@ -53,7 +53,7 @@ const Index: React.FC = () => {
               <img 
                 src="/lovable-uploads/36f8e087-4855-4f2b-ab75-719fafc7e3c7.png" 
                 alt="MATHPATH Logo" 
-                className="w-48 h-48" 
+                className="w-64 h-64" 
               />
             </div>
             <div className="md:w-1/2 text-center md:text-left">
