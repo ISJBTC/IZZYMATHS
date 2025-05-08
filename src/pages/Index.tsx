@@ -5,7 +5,7 @@ import MainLayout from '@/components/layouts/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/hooks/useAuth';
-import { Book, FileText, MessageSquare, Users } from 'lucide-react';
+import { Book, FileText, MessageSquare, Users, BookOpen, FileSearch, Lightbulb } from 'lucide-react';
 import axios from 'axios';
 
 const Index: React.FC = () => {
@@ -133,34 +133,46 @@ const Index: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <Card className="shadow-md hover:shadow-lg transition-shadow">
               <CardHeader>
-                <Book className="h-12 w-12 text-math-primary mb-2" />
+                <BookOpen className="h-12 w-12 text-math-primary mb-2" />
                 <CardTitle>Comprehensive Learning Materials</CardTitle>
-                <CardDescription>Access detailed notes, examples, and practice problems in various mathematics topics.</CardDescription>
+                <CardDescription>Complete coverage of engineering mathematics syllabus with detailed notes</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">Our curated content helps engineering students master complex mathematical concepts through clear explanations.</p>
+                <ul className="text-gray-600 space-y-2 list-disc list-inside">
+                  <li>Comprehensive notes covering engineering mathematics syllabus</li>
+                  <li>Formula sheets and quick reference guides</li>
+                  <li>Easy-to-understand explanations with real-world applications</li>
+                </ul>
               </CardContent>
             </Card>
             
             <Card className="shadow-md hover:shadow-lg transition-shadow">
               <CardHeader>
-                <FileText className="h-12 w-12 text-math-primary mb-2" />
-                <CardTitle>Question Papers & Solutions</CardTitle>
-                <CardDescription>Practice with previous exam papers and learn from step-by-step solutions.</CardDescription>
+                <FileSearch className="h-12 w-12 text-math-primary mb-2" />
+                <CardTitle>Solved Example Problems</CardTitle>
+                <CardDescription>Master concepts through practice with detailed solutions</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">Gain confidence by working through real exam questions with guided detailed explanations.</p>
+                <ul className="text-gray-600 space-y-2 list-disc list-inside">
+                  <li>Solved example problems with step-by-step solutions</li>
+                  <li>Practice exercises with varying difficulty levels</li>
+                  <li>Previous exam papers with detailed explanations</li>
+                </ul>
               </CardContent>
             </Card>
             
             <Card className="shadow-md hover:shadow-lg transition-shadow">
               <CardHeader>
-                <MessageSquare className="h-12 w-12 text-math-primary mb-2" />
-                <CardTitle>Supportive Community</CardTitle>
-                <CardDescription>Connect with peers and mentors to discuss concepts and solve problems together.</CardDescription>
+                <Lightbulb className="h-12 w-12 text-math-primary mb-2" />
+                <CardTitle>Visual Learning Approach</CardTitle>
+                <CardDescription>See the concepts come to life with visual interpretations</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">Our community forum provides a collaborative space for asking questions and sharing insights.</p>
+                <ul className="text-gray-600 space-y-2 list-disc list-inside">
+                  <li>Geometrical interpretation of mathematical concepts</li>
+                  <li>Interactive visualizations of complex topics</li>
+                  <li>Diagrams and graphs to enhance understanding</li>
+                </ul>
               </CardContent>
             </Card>
           </div>
