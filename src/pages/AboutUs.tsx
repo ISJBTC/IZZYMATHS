@@ -1,4 +1,3 @@
-
 import React from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Card, CardContent } from '@/components/ui/card';
@@ -14,11 +13,8 @@ const AboutUs: React.FC = () => {
         
         <Card className="mb-8">
           <CardContent className="pt-6">
-            <p className="text-lg mb-6">
-              MathPath is an online platform offering subscription-based mathematics 
-              resources specifically for students. Material is developed by a small 
-              team of members, we provide focused content that simplifies complex 
-              mathematical concepts.
+            <p className="text-lg mb-4 text-justify">
+              MathPath is an online platform dedicated to providing subscription-based mathematics resources specifically for undergraduate students. Founded and developed by a small, passionate team of experts, we focus on transforming complex mathematical concepts into accessible, clear content that resonates with students at all levels. Our mission is to break down the barriers that often prevent students from mastering the mathematical foundations crucial to their success.
             </p>
           </CardContent>
         </Card>
@@ -28,73 +24,46 @@ const AboutUs: React.FC = () => {
         </h2>
         <Card className="mb-8">
           <CardContent className="pt-6">
-            <ul className="list-disc pl-6 space-y-2 mb-6">
-              <li>Comprehensive notes covering engineering mathematics syllabus</li>
-              <li>Solved example problems with step-by-step solutions</li>
-              <li>Geometrical interpretation of mathematical concepts</li>
-              <li>Formula sheets and quick reference guides</li>
-              <li>Easy-to-understand explanations with real-world applications</li>
-            </ul>
+            <p className="text-lg mb-4 text-justify">
+              At MathPath, we provide comprehensive resources designed with students in mind. Our extensive collection of notes covers the majority of mathematics required at undergraduate level, offering in-depth explanations of key concepts and theories. We pride ourselves on our detailed, solved example problems that walk students through solutions step-by-step, building confidence and competence. Our materials emphasize the geometrical interpretation of mathematical concepts, helping students visualize abstract ideas. Currently we are in the development mode, so we will be updating and madifying with variety of contents in different form on our website in due course of time. Students are advised to explore content as per their course. 
+            </p>
           </CardContent>
         </Card>
 
         <h2 className="text-2xl font-bold text-math-primary mb-4">
           Our Approach
         </h2>
-        <Card className="mb-8">
-          <CardContent className="pt-6">
-            <div className="flex items-start mb-6">
-              <div className="mr-4 mt-1">
-                <Book className="h-6 w-6 text-math-primary" />
-              </div>
-              <p>
-                We believe that mathematics shouldn't be a barrier to engineering success. 
-                Our materials emphasize practice over passive learning, providing students 
-                with opportunities to work through problems rather than simply reading or 
-                watching videos.
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <Card className="h-full">
+            <CardContent className="pt-6 flex flex-col items-center text-center h-full">
+              <Book className="h-10 w-10 text-math-primary mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Active Learning</h3>
+              <p className="text-justify">
+                We firmly believe that mathematics shouldn't be a barrier to success. Unlike traditional learning methods, our materials emphasize active practice over passive consumption. We provide students with ample opportunities to work through problems themselves, rather than simply reading text or watching videos.
               </p>
-            </div>
-            
-            <div className="flex items-start mb-6">
-              <div className="mr-4 mt-1">
-                <FileText className="h-6 w-6 text-math-primary" />
-              </div>
-              <p>
-                We break down difficult concepts into manageable parts, using clear 
-                language and practical examples relevant to engineering applications.
+            </CardContent>
+          </Card>
+          
+          <Card className="h-full">
+            <CardContent className="pt-6 flex flex-col items-center text-center h-full">
+              <FileText className="h-10 w-10 text-math-primary mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Simplified Concepts</h3>
+              <p className="text-justify">
+                Our methodology breaks down difficult concepts into manageable parts, using clear, jargon-free language and practical examples relevant to applications. We carefully structure our content to build confidence gradually, allowing students to master fundamentals before tackling more advanced topics.
               </p>
-            </div>
-            
-            <div className="flex items-start">
-              <div className="mr-4 mt-1">
-                <Users className="h-6 w-6 text-math-primary" />
-              </div>
-              <p>
-                Our subscription model keeps costs affordable while allowing us to 
-                continuously update and improve our content.
+            </CardContent>
+          </Card>
+          
+          <Card className="h-full">
+            <CardContent className="pt-6 flex flex-col items-center text-center h-full">
+              <Users className="h-10 w-10 text-math-primary mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Affordable Access</h3>
+              <p className="text-justify">
+                Our subscription model is designed with students' needs in mind, keeping costs affordable while enabling us to continuously update and improve our content. This sustainable approach allows us to respond to feedback, incorporate new methods, and expand our offerings to better serve the student community.
               </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <h2 className="text-2xl font-bold text-math-primary mb-4">
-          Contact
-        </h2>
-        <Card className="mb-8">
-          <CardContent className="pt-6 text-center">
-            <p className="text-lg font-medium text-math-primary italic">
-              "Math That Makes Minds"
-            </p>
-            <div className="mt-4">
-              <a 
-                href="mailto:contact@mathpath.com" 
-                className="text-blue-600 hover:underline"
-              >
-                contact@mathpath.com
-              </a>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </MainLayout>
   );
