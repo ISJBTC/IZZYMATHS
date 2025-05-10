@@ -58,15 +58,13 @@ const Index: React.FC = () => {
             </div>
             <div className="md:w-1/2 text-center md:text-left">
               <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in text-gray-900">
-                Master Mathematics for Engineering
+                Master Mathematics 
               </h1>
               <p className="text-lg md:text-xl mb-2 text-gray-700">
                 Comprehensive learning platform with detailed step-by-step solutions, 
-                question papers, and a supportive math community.
+                geometrical explaination of difficult concepts.
               </p>
-              <p className="text-md italic mb-6 text-math-primary">
-                Math That Makes Minds
-              </p>
+              
               {!user ? (
                 <div className="flex flex-wrap gap-4 justify-center md:justify-start">
                   <Button 
@@ -129,19 +127,19 @@ const Index: React.FC = () => {
       {/* Features */}
       <section className="py-16 bg-gray-50">
         <div className="container max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">Key Features</h2>
+          <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">Our Approach</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <Card className="shadow-md hover:shadow-lg transition-shadow">
               <CardHeader>
                 <BookOpen className="h-12 w-12 text-math-primary mb-2" />
-                <CardTitle>Comprehensive Learning Materials</CardTitle>
-                <CardDescription>Complete coverage of engineering mathematics syllabus with detailed notes</CardDescription>
+                <CardTitle>Active Learning</CardTitle>
+                <CardDescription>Emphasizing practice over passive consumption for better understanding</CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="text-gray-600 space-y-2 list-disc list-inside">
-                  <li>Comprehensive notes covering engineering mathematics syllabus</li>
-                  <li>Formula sheets and quick reference guides</li>
-                  <li>Easy-to-understand explanations with real-world applications</li>
+                <ul className="text-gray-600 space-y-2 list-disc pl-5 text-left">
+                  <li className="text-left">Materials focused on active practice over passive learning</li>
+                  <li className="text-left">Opportunities to work through problems independently</li>
+                  <li className="text-left">Hands-on approach that builds essential problem-solving skills</li>
                 </ul>
               </CardContent>
             </Card>
@@ -149,14 +147,14 @@ const Index: React.FC = () => {
             <Card className="shadow-md hover:shadow-lg transition-shadow">
               <CardHeader>
                 <FileSearch className="h-12 w-12 text-math-primary mb-2" />
-                <CardTitle>Solved Example Problems</CardTitle>
-                <CardDescription>Master concepts through practice with detailed solutions</CardDescription>
+                <CardTitle>Simplified Concepts</CardTitle>
+                <CardDescription>Breaking down complex topics into manageable, approachable parts</CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="text-gray-600 space-y-2 list-disc list-inside">
-                  <li>Solved example problems with step-by-step solutions</li>
-                  <li>Practice exercises with varying difficulty levels</li>
-                  <li>Previous exam papers with detailed explanations</li>
+                <ul className="text-gray-600 space-y-2 list-disc pl-5 text-left">
+                  <li className="text-left">Clear, jargon-free language for better comprehension</li>
+                  <li className="text-left">Practical examples relevant to real applications</li>
+                  <li className="text-left">Structured content that builds confidence gradually</li>
                 </ul>
               </CardContent>
             </Card>
@@ -164,20 +162,20 @@ const Index: React.FC = () => {
             <Card className="shadow-md hover:shadow-lg transition-shadow">
               <CardHeader>
                 <Lightbulb className="h-12 w-12 text-math-primary mb-2" />
-                <CardTitle>Visual Learning Approach</CardTitle>
-                <CardDescription>See the concepts come to life with visual interpretations</CardDescription>
+                <CardTitle>Affordable Access</CardTitle>
+                <CardDescription>Student-friendly subscription model with continuous improvements</CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="text-gray-600 space-y-2 list-disc list-inside">
-                  <li>Geometrical interpretation of mathematical concepts</li>
-                  <li>Interactive visualizations of complex topics</li>
-                  <li>Diagrams and graphs to enhance understanding</li>
+                <ul className="text-gray-600 space-y-2 list-disc pl-5 text-left">
+                  <li className="text-left">Cost-effective pricing designed for students' needs</li>
+                  <li className="text-left">Regular updates and content improvements</li>
+                  <li className="text-left">Responsive to feedback to better serve the student community</li>
                 </ul>
               </CardContent>
             </Card>
           </div>
         </div>
-      </section>
+      </section>  
     </MainLayout>
   );
 };

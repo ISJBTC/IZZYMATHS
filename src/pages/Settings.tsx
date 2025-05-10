@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { useAuth } from '@/hooks/useAuth';
@@ -50,8 +49,8 @@ const Settings: React.FC = () => {
       <MainLayout>
         <div className="container max-w-4xl mx-auto py-12 px-4">
           <Card>
-            <CardContent className="text-center py-8">
-              <p>Please log in to view your settings</p>
+            <CardContent className="text-left py-8">
+              <p className="text-left">Please log in to view your settings</p>
               <Button asChild className="mt-4">
                 <a href="/login">Sign In</a>
               </Button>
@@ -65,21 +64,21 @@ const Settings: React.FC = () => {
   return (
     <MainLayout>
       <div className="container max-w-4xl mx-auto py-12 px-4">
-        <h1 className="text-3xl font-bold mb-8">Settings</h1>
+        <h1 className="text-3xl font-bold mb-8 text-left">Settings</h1>
 
         <div className="space-y-8">
           {/* Notification Settings */}
           <Card>
             <CardHeader>
-              <CardTitle>Notifications</CardTitle>
+              <CardTitle className="text-left">Notifications</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                   <Bell className="h-5 w-5 text-math-primary" />
                   <div>
-                    <p className="font-medium">Email Notifications</p>
-                    <p className="text-sm text-gray-500">Receive updates about subscription and content</p>
+                    <p className="font-medium text-left">Email Notifications</p>
+                    <p className="text-sm text-gray-500 text-left">Receive updates about subscription and content</p>
                   </div>
                 </div>
                 <Switch 
@@ -94,8 +93,8 @@ const Settings: React.FC = () => {
                 <div className="flex items-center space-x-4">
                   <Smartphone className="h-5 w-5 text-math-primary" />
                   <div>
-                    <p className="font-medium">Push Notifications</p>
-                    <p className="text-sm text-gray-500">Receive instant alerts on this device</p>
+                    <p className="font-medium text-left">Push Notifications</p>
+                    <p className="text-sm text-gray-500 text-left">Receive instant alerts on this device</p>
                   </div>
                 </div>
                 <Switch 
@@ -109,15 +108,15 @@ const Settings: React.FC = () => {
           {/* Security Settings */}
           <Card>
             <CardHeader>
-              <CardTitle>Security & Privacy</CardTitle>
+              <CardTitle className="text-left">Security & Privacy</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                   <Shield className="h-5 w-5 text-math-primary" />
                   <div>
-                    <p className="font-medium">Content Protection</p>
-                    <p className="text-sm text-gray-500">Prevent unauthorized copying of content</p>
+                    <p className="font-medium text-left">Content Protection</p>
+                    <p className="text-sm text-gray-500 text-left">Prevent unauthorized copying of content</p>
                   </div>
                 </div>
                 <Switch 
@@ -129,7 +128,7 @@ const Settings: React.FC = () => {
               <Separator />
               
               <div>
-                <p className="font-medium mb-2">Password Management</p>
+                <p className="font-medium mb-2 text-left">Password Management</p>
                 <Button 
                   variant="outline" 
                   className="w-full md:w-auto"
@@ -144,10 +143,10 @@ const Settings: React.FC = () => {
           {/* Subscription Settings */}
           <Card>
             <CardHeader>
-              <CardTitle>Subscription</CardTitle>
+              <CardTitle className="text-left">Subscription</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="mb-4">
+              <p className="mb-4 text-left">
                 {user.subscription_active 
                   ? "You currently have an active subscription." 
                   : "You don't have an active subscription."}
