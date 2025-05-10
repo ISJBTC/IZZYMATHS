@@ -13,7 +13,7 @@ const AboutUs: React.FC = () => {
           <img 
             src="/lovable-uploads/36f8e087-4855-4f2b-ab75-719fafc7e3c7.png" 
             alt="MATHPATH Logo Watermark" 
-            className="w-[480px] h-[480px] opacity-5" 
+            className="w-[800px] h-[800px] opacity-5" 
           />
         </div>
         

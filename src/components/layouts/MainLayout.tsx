@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Bell, Book, FileText, MessageSquare, Search, Settings, Users } from 'lucide-react';
+import { Bell, Book, FileText, HomeIcon, MessageSquare, Search, Settings, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import AuthStatus from '../auth/AuthStatus';
 import { 
@@ -225,8 +225,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                     location.pathname === "/" ? "bg-gray-100 text-math-primary" : "text-gray-700"
                   )}
                 >
-                  <Book className="w-5 h-5" />
-                  <span className={cn("ml-3 text-sm font-medium", !sidebarOpen && "md:hidden")}>Learning Content</span>
+                  <HomeIcon className="w-5 h-5" />
+                  <span className={cn("ml-3 text-sm font-medium", !sidebarOpen && "md:hidden")}>Home</span>
                 </Link>
               </li>
               <li>

@@ -52,7 +52,7 @@ const Index: React.FC = () => {
               <img 
                 src="/lovable-uploads/36f8e087-4855-4f2b-ab75-719fafc7e3c7.png" 
                 alt="MATHPATH Logo" 
-                className="w-80 h-80" /* Increased from w-64 h-64 to w-80 h-80 */
+                className="w-100 h-100" /* Increased from w-64 h-64 to w-80 h-80 */
               />
             </div>
             <div className="md:w-1/2 text-center md:text-left">
