@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import PDFViewer from '@/components/PDFViewer';
-import LinearDependenceSolver from '@/components/LinearDependenceSolver';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
@@ -145,11 +144,6 @@ const Content: React.FC = () => {
 
   const relevantChapter = findRelevantChapter();
 
-  // Function to determine if we should show the LinearDependenceSolver
-  const shouldShowLinearDependenceSolver = (currentTopic: string, chapterNumber: string) => {
-    return currentTopic === 'linearAlgebra' && chapterNumber === '7';
-  };
-
   return (
     <MainLayout>
       <div className="container max-w-6xl mx-auto py-8 px-4">
@@ -209,14 +203,6 @@ const Content: React.FC = () => {
                 {topics[topic as keyof typeof topics].chapters.map((_, index) => (
                   <TabsContent key={`${topic}_chapter${index + 1}`} value={`${topic}_chapter${index + 1}`}>
                     <PDFViewer pdfPath={`/pdfs/${topic}_chapter${index + 1}.pdf`} searchTerm={searchTerm} />
-                    
-                    {/* Conditionally render LinearDependenceSolver for Linear Algebra Chapter 7 */}
-                    {shouldShowLinearDependenceSolver(topic, (index + 1).toString()) && (
-                      <div className="mt-8">
-                        <h2 className="text-xl font-bold mb-4">Interactive Practice</h2>
-                        <LinearDependenceSolver />
-                      </div>
-                    )}
                   </TabsContent>
                 ))}
               </div>
