@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 
 // Define types for our data structures
@@ -562,3 +563,43 @@ const LinearDependenceSolver: React.FC = () => {
       <div className="mb-4">
         <button
           className="text-blue-600 underline"
+          onClick={toggleHint}
+        >
+          {showHint ? "Hide hint" : "Show hint"}
+        </button>
+        {showHint && (
+          <div className="p-3 bg-blue-50 rounded-lg mt-2">
+            <p className="font-semibold">Hint:</p>
+            <p>{step.hint}</p>
+          </div>
+        )}
+        <p className="text-sm text-gray-500 mt-1">Hints used: {hintsUsed}</p>
+      </div>
+      
+      {/* Solution map */}
+      {showSolutionMap && <SolutionMap />}
+      
+      {/* Path taken so far */}
+      {path.length > 0 && (
+        <div className="mt-6">
+          <h3 className="text-lg font-semibold mb-2">Your path so far:</h3>
+          <div className="bg-gray-100 p-3 rounded-lg">
+            <ol className="list-decimal pl-5">
+              {path.map((p, index) => {
+                const stepData = findStep(p.stepId);
+                const optionData = stepData?.options.find(o => o.id === p.option);
+                return (
+                  <li key={index}>
+                    {optionData?.text}
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default LinearDependenceSolver;
