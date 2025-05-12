@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -28,7 +29,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const [notifications, setNotifications] = useState([
     { id: 1, text: "Your subscription is active", read: false, date: "5 mins ago" },
     { id: 2, text: "New content available in Linear Algebra", read: false, date: "3 hours ago" },
-    { id: 3, text: "Welcome to MATHPATH!", read: true, date: "2 days ago" }
+    { id: 3, text: "Welcome to IZZYMATHS!", read: true, date: "2 days ago" }
   ]);
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -123,12 +124,12 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             <div className="flex flex-col items-start">
               <div className="flex items-center">
                 <img 
-                  src="/lovable-uploads/36f8e087-4855-4f2b-ab75-719fafc7e3c7.png" 
-                  alt="MATHPATH Logo" 
+                  src="/lovable-uploads/9cc52008-82e2-4079-a49e-7a1a3662cc01.png" 
+                  alt="IZZYMATHS Logo" 
                   className="h-14 w-14 mr-2" 
                   style={{ borderRadius: '50%' }}
                 />
-                <span className="text-xl font-bold text-math-primary">MATHPATH</span>
+                <span className="text-xl font-bold text-math-primary">IZZYMATHS</span>
               </div>
               <span className="text-xs text-gray-500 italic">Math That Makes Minds</span>
             </div>

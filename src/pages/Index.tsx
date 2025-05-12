@@ -50,9 +50,9 @@ const Index: React.FC = () => {
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="md:w-1/2 mb-10 md:mb-0 flex justify-center md:justify-start">
               <img 
-                src="/lovable-uploads/36f8e087-4855-4f2b-ab75-719fafc7e3c7.png" 
-                alt="MATHPATH Logo" 
-                className="w-100 h-100" /* Increased from w-64 h-64 to w-80 h-80 */
+                src="/lovable-uploads/9cc52008-82e2-4079-a49e-7a1a3662cc01.png" 
+                alt="IZZYMATHS Logo" 
+                className="w-100 h-100" 
               />
             </div>
             <div className="md:w-1/2 text-center md:text-left">
