@@ -45,7 +45,7 @@ const ForgotPassword: React.FC = () => {
             <div className="bg-blue-100 p-2 rounded-full">
               <Book className="w-6 h-6 text-math-primary" />
             </div>
-            <span className="text-2xl font-bold text-math-primary">IZZYMATHS</span>
+            <span className="text-2xl font-bold text-math-primary">MATHPATH</span>
           </Link>
         </div>
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
