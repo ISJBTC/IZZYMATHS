@@ -123,7 +123,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             <div className="flex flex-col items-start">
               <div className="flex items-center">
                 <img 
-                  src="/lovable-uploads/36f8e087-4855-4f2b-ab75-719fafc7e3c7.png" 
+                  src="/lovable-uploads/6ffec8d6-57ea-4ba1-8d95-cd53a74c8526.png" 
                   alt="IZZYMATHS Logo" 
                   className="h-14 w-14 mr-2" 
                   style={{ borderRadius: '50%' }}

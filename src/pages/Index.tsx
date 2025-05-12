@@ -51,7 +51,7 @@ const Index: React.FC = () => {
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="md:w-1/2 mb-10 md:mb-0 flex justify-center md:justify-start">
               <img 
-                src="/lovable-uploads/36f8e087-4855-4f2b-ab75-719fafc7e3c7.png" 
+                src="/lovable-uploads/6ffec8d6-57ea-4ba1-8d95-cd53a74c8526.png" 
                 alt="IZZYMATHS Logo" 
                 className="w-100 h-100" 
               />
