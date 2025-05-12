@@ -43,7 +43,7 @@ const Subscription: React.FC = () => {
     }
   };
 
-  // One-time payment handler (modified to open in new tab)
+  // One-time payment handler (original implementation)
   const handleOneTimePayment = async () => {
     if (!user) {
       navigate('/login');
@@ -94,28 +94,20 @@ const Subscription: React.FC = () => {
         },
         theme: {
           color: "#3399cc"
-        },
-        modal: {
-          ondismiss: function() {
-            setIsProcessing(false);
-            console.log('Payment window closed without completing payment');
-          }
         }
       };
 
-      // Create and open Razorpay checkout
       const razor = new (window as any).Razorpay(options);
-      
-      // Open in a new tab to avoid UI freezing in main window
       razor.open();
     } catch (error) {
       console.error(error);
       toast({ title: "Payment setup failed", variant: "destructive" });
+    } finally {
       setIsProcessing(false);
     }
   };
 
-  // Subscription with auto-renewal handler (modified to open in new tab)
+  // Subscription with auto-renewal handler (new implementation)
   const handleSubscribe = async () => {
     if (!user) {
       navigate('/login');
@@ -172,25 +164,19 @@ const Subscription: React.FC = () => {
           color: "#3399cc"
         },
         modal: {
-          confirm_close: true,  // Confirm before closing payment modal
-          ondismiss: function() {
-            setIsProcessing(false);
-            console.log('Subscription window closed without completing');
-          }
+          confirm_close: true  // Confirm before closing payment modal
         },
         notes: {
           user_id: user.id  // Store user ID in notes for webhook processing
         }
       };
 
-      // Create and open Razorpay checkout for subscription
       const razor = new (window as any).Razorpay(options);
-      
-      // Open in a new tab to avoid UI freezing in main window
       razor.open();
     } catch (error) {
       console.error(error);
       toast({ title: "Subscription setup failed", variant: "destructive" });
+    } finally {
       setIsProcessing(false);
     }
   };
