@@ -8,6 +8,7 @@ import PDFViewer from '@/components/PDFViewer';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
+import LinearDependenceSolver from '@/components/LinearDependenceSolver';
 
 const Content: React.FC = () => {
   const [topic, setTopic] = useState('linearAlgebra');
@@ -144,6 +145,10 @@ const Content: React.FC = () => {
 
   const relevantChapter = findRelevantChapter();
 
+  // Check if we're on Linear Algebra Chapter 7
+  const isLinearAlgebraChapter7 = topic === 'linearAlgebra' && 
+    (queryParams.get('chapter') === '7' || relevantChapter === 7);
+
   return (
     <MainLayout>
       <div className="container max-w-6xl mx-auto py-8 px-4">
@@ -187,6 +192,11 @@ const Content: React.FC = () => {
                       key={`${topic}_chapter${index + 1}`} 
                       value={`${topic}_chapter${index + 1}`}
                       className={relevantChapter === index + 1 ? 'border-2 border-math-primary' : ''}
+                      onClick={() => {
+                        const urlParams = new URLSearchParams(location.search);
+                        urlParams.set('chapter', `${index + 1}`);
+                        navigate(`/content?${urlParams.toString()}`);
+                      }}
                     >
                       {chapter}
                       {relevantChapter === index + 1 && (
@@ -202,6 +212,12 @@ const Content: React.FC = () => {
               <div className="mt-px">
                 {topics[topic as keyof typeof topics].chapters.map((_, index) => (
                   <TabsContent key={`${topic}_chapter${index + 1}`} value={`${topic}_chapter${index + 1}`}>
+                    {/* Add LinearDependenceSolver for Linear Algebra Chapter 7 */}
+                    {topic === 'linearAlgebra' && index === 6 && (
+                      <div className="mb-6">
+                        <LinearDependenceSolver />
+                      </div>
+                    )}
                     <PDFViewer pdfPath={`/pdfs/${topic}_chapter${index + 1}.pdf`} searchTerm={searchTerm} />
                   </TabsContent>
                 ))}
