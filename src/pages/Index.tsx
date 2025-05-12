@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/layouts/MainLayout';
@@ -51,8 +52,8 @@ const Index: React.FC = () => {
             <div className="md:w-1/2 mb-10 md:mb-0 flex justify-center md:justify-start">
               <img 
                 src="/lovable-uploads/36f8e087-4855-4f2b-ab75-719fafc7e3c7.png" 
-                alt="MATHPATH Logo" 
-                className="w-100 h-100" /* Increased from w-64 h-64 to w-80 h-80 */
+                alt="IZZYMATHS Logo" 
+                className="w-100 h-100" 
               />
             </div>
             <div className="md:w-1/2 text-center md:text-left">
