@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -123,7 +124,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             <div className="flex flex-col items-start">
               <div className="flex items-center">
                 <img 
-                  src="/lovable-uploads/6ffec8d6-57ea-4ba1-8d95-cd53a74c8526.png" 
+                  src="/lovable-uploads/9cc52008-82e2-4079-a49e-7a1a3662cc01.png" 
                   alt="IZZYMATHS Logo" 
                   className="h-14 w-14 mr-2" 
                   style={{ borderRadius: '50%' }}
