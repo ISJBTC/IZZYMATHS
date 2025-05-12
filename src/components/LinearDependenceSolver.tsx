@@ -323,7 +323,8 @@ const LinearDependenceSolver: React.FC = () => {
       solution: "In this problem, we've worked through a systematic approach to determine linear dependence or independence of vectors:\n\n1. First, we set up a homogeneous system of equations c₁v₁ + c₂v₂ + c₃v₃ = 0 based on the definition of linear dependence.\n\n2. We constructed an augmented coefficient matrix from this system and applied row reduction to find its reduced row echelon form.\n\n3. By analyzing the rank of the matrix (or equivalent methods like counting pivots or free variables), we determined that the vectors are linearly independent.\n\n4. This means none of the three vectors can be expressed as a linear combination of the others, and the only solution to c₁v₁ + c₂v₂ + c₃v₃ = 0 is the trivial solution c₁=c₂=c₃=0.\n\nFor linearly independent vectors, we would not be able to find any non-trivial relation between them. If they had been linearly dependent, we would have found specific coefficients c₁, c₂, c₃ (not all zero) that satisfy the equation."
     }
   ];
-  
+  // Current step object
+  const step: Step = steps[currentStep];
   // Update full solution when a correct option is selected
   useEffect(() => {
     if (showStepSolution && step.solution) {
@@ -347,8 +348,7 @@ const LinearDependenceSolver: React.FC = () => {
     return steps.find(step => step.id === stepId);
   };
   
-  // Current step object
-  const step: Step = steps[currentStep];
+  
   
   // Go back to the previous step
   const goBackStep = (): void => {
@@ -561,4 +561,28 @@ const LinearDependenceSolver: React.FC = () => {
       {/* Hint system */}
       <div className="mb-4">
         <button
-          className="text-blue-600
+          className="text-blue-600 hover:text-blue-800 underline"
+          onClick={toggleHint}
+        >
+          {showHint ? "Hide Hint" : "Show Hint"}
+        </button>
+        {showHint && (
+          <div className="p-3 bg-blue-50 rounded-lg mt-2">
+            <p className="font-semibold">Hint:</p>
+            <p>{step.hint}</p>
+          </div>
+        )}
+      </div>
+      
+      {/* Hint usage counter */}
+      <div className="text-sm text-gray-500 mb-4">
+        Hints used: {hintsUsed}
+      </div>
+      
+      {/* Solution map when requested */}
+      {showSolutionMap && <SolutionMap />}
+    </div>
+  );
+};
+
+export default LinearDependenceSolver;
