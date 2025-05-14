@@ -28,7 +28,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const [notifications, setNotifications] = useState([
     { id: 1, text: "Your subscription is active", read: false, date: "5 mins ago" },
     { id: 2, text: "New content available in Linear Algebra", read: false, date: "3 hours ago" },
-    { id: 3, text: "Welcome to MATHPATH!", read: true, date: "2 days ago" }
+    { id: 3, text: "Welcome to IZZYMATHS!", read: true, date: "2 days ago" }
   ]);
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -128,9 +128,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                   className="h-14 w-14 mr-2" 
                   style={{ borderRadius: '50%' }}
                 />
-                <span className="text-xl font-bold text-math-primary">MATHPATH</span>
+                <span className="text-xl font-bold text-math-primary">IZZYMATHS</span>
               </div>
-              <span className="text-xs text-gray-500 italic">Math That Makes Minds</span>
+              <span className="text-xs text-gray-500 italic">READ TO PRACTICE</span>
             </div>
           </Link>
         </div>

@@ -50,14 +50,14 @@ const Index: React.FC = () => {
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="md:w-1/2 mb-10 md:mb-0 flex justify-center md:justify-start">
               <img 
-                src="/lovable-uploads/36f8e087-4855-4f2b-ab75-719fafc7e3c7.png" 
+                src="/lovable-uploads/izzymaths_logo.png" 
                 alt="MATHPATH Logo" 
-                className="w-100 h-100" /* Increased from w-64 h-64 to w-80 h-80 */
+                className="w-80 h-80" /* Increased from w-64 h-64 to w-80 h-80 */
               />
             </div>
             <div className="md:w-1/2 text-center md:text-left">
               <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in text-gray-900">
-                Master Mathematics 
+                Practice Mathematics 
               </h1>
               <p className="text-lg md:text-xl mb-2 text-gray-700">
                 Comprehensive learning platform with detailed step-by-step solutions, 

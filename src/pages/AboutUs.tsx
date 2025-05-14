@@ -11,7 +11,7 @@ const AboutUs: React.FC = () => {
         {/* Watermark - positioned at a higher z-index than cards but lower than card content */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
           <img 
-            src="/lovable-uploads/36f8e087-4855-4f2b-ab75-719fafc7e3c7.png" 
+            src="/lovable-uploads/izzymaths_logo.png" 
             alt="MATHPATH Logo Watermark" 
             className="w-[800px] h-[800px] opacity-5" 
           />
@@ -26,7 +26,7 @@ const AboutUs: React.FC = () => {
           <Card className="mb-8 relative z-0">
             <CardContent className="pt-6 relative z-20">
               <p className="text-lg mb-4 text-justify">
-                MathPath is an online platform dedicated to providing subscription-based mathematics resources specifically for undergraduate students. Founded and developed by a small, passionate team of experts, we focus on transforming complex mathematical concepts into accessible, clear content that resonates with students at all levels. Our mission is to break down the barriers that often prevent students from mastering the mathematical foundations crucial to their success.
+                IZZYMATHS is an online platform dedicated to providing subscription-based mathematics resources specifically for undergraduate students. Founded and developed by a small, passionate team of experts, we focus on transforming complex mathematical concepts into accessible, clear content that resonates with students at all levels. Our mission is to break down the barriers that often prevent students from mastering the mathematical foundations crucial to their success.
               </p>
             </CardContent>
           </Card>
@@ -37,7 +37,7 @@ const AboutUs: React.FC = () => {
           <Card className="mb-8 relative z-0">
             <CardContent className="pt-6 relative z-20">
               <p className="text-lg mb-4 text-justify">
-                At MathPath, we provide comprehensive resources designed with students in mind. Our extensive collection of notes covers the majority of mathematics required at undergraduate level, offering in-depth explanations of key concepts and theories. We pride ourselves on our detailed, solved example problems that walk students through solutions step-by-step, building confidence and competence. Our materials emphasize the geometrical interpretation of mathematical concepts, helping students visualize abstract ideas. Currently we are in the development mode, so we will be updating and madifying with variety of contents in different form on our website in due course of time. Students are advised to explore content as per their course. 
+                At IZZYMATHS, we provide comprehensive resources designed with students in mind. Our extensive collection of notes covers the majority of mathematics required at undergraduate level, offering in-depth explanations of key concepts and theories. We pride ourselves on our detailed, solved example problems that walk students through solutions step-by-step, building confidence and competence. Our materials emphasize the geometrical interpretation of mathematical concepts, helping students visualize abstract ideas. Currently we are in the development mode, so we will be updating and madifying with variety of contents in different form on our website in due course of time. Students are advised to explore content as per their course. 
               </p>
             </CardContent>
           </Card>
