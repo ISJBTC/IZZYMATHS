@@ -35,6 +35,11 @@ const Content: React.FC = () => {
       chapters: ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6", "Chapter 7", "Chapter 8"],
       keywords: ["derivatives", "integrals", "ordinary", "partial", "separation of variables", "exact equations"]
     },
+    partialDifferentiation: {
+      displayName: "Partial Differentiations",
+      chapters: ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6", "Chapter 7", "Chapter 8"],
+      keywords: ["laplace", "fourier", "z-transform", "convolution", "transfer functions"]
+    },
     calculusForEngineers: {
       displayName: "Calculus for Engineers",
       chapters: ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6", "Chapter 7", "Chapter 8"],
