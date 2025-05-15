@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -9,10 +8,14 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import LinearDependenceSolver from '@/components/LinearDependenceSolver';
+import ReactorPanel from '@/components/ReactorPanel';
+import QuizPanel from '@/components/QuizPanel';
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
 
 const Content: React.FC = () => {
   const [topic, setTopic] = useState('linearAlgebra');
   const [searchTerm, setSearchTerm] = useState<string | null>(null);
+  const [currentChapter, setCurrentChapter] = useState<number>(1);
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -22,6 +25,7 @@ const Content: React.FC = () => {
   const queryParams = new URLSearchParams(location.search);
   const topicParam = queryParams.get('topic');
   const searchParam = queryParams.get('search');
+  const chapterParam = queryParams.get('chapter');
 
   // Map topics to their display names, chapters, and keywords for searching
   const topics = {
@@ -116,14 +120,32 @@ const Content: React.FC = () => {
         navigate('/not-found');
       }
     }
-  }, [user, topicParam, searchParam, navigate]);
+    
+    // Set current chapter from URL parameter if provided
+    if (chapterParam) {
+      const chapter = parseInt(chapterParam);
+      if (!isNaN(chapter) && chapter >= 1 && chapter <= 8) {
+        setCurrentChapter(chapter);
+      }
+    } else {
+      setCurrentChapter(1); // Default to chapter 1
+    }
+  }, [user, topicParam, searchParam, chapterParam, navigate]);
 
   const handleTopicClick = (topicKey: keyof typeof topics) => {
     setTopic(topicKey);
     // Clear search term when changing topics
     setSearchTerm(null);
+    setCurrentChapter(1); // Reset to chapter 1 when changing topics
     // Update URL without search parameter
     navigate(`/content?topic=${topicKey}`);
+  };
+
+  const handleChapterChange = (chapter: number) => {
+    setCurrentChapter(chapter);
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set('chapter', `${chapter}`);
+    navigate(`/content?${urlParams.toString()}`);
   };
 
   // Find which chapter might contain the search term
@@ -156,78 +178,106 @@ const Content: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="container max-w-6xl mx-auto py-8 px-4">
-        <div className="flex flex-col md:flex-row gap-6">
-          {/* Sidebar */}
-          <div className="md:w-64 space-y-6">
-            <div className="bg-white p-4 rounded-lg shadow">
-              <h3 className="font-semibold text-lg mb-3">Topics</h3>
-              <Separator className="my-2" />
-              <ul className="space-y-1">
-                {Object.entries(topics).map(([key, { displayName }]) => (
-                  <li key={key}>
-                    <Button 
-                      variant="ghost" 
-                      className={`w-full justify-start ${topic === key ? 'text-math-primary font-medium' : ''}`}
-                      onClick={() => handleTopicClick(key as keyof typeof topics)}
-                    >
-                      {displayName}
-                    </Button>
-                  </li>
-                ))}
-              </ul>
+      <div className="container max-w-7xl mx-auto py-8 px-4">
+        <div className="flex flex-col gap-6">
+          {/* Sidebar and Main Content Layout */}
+          <div className="flex flex-col md:flex-row gap-6">
+            {/* Sidebar */}
+            <div className="md:w-64 space-y-6">
+              <div className="bg-white p-4 rounded-lg shadow">
+                <h3 className="font-semibold text-lg mb-3">Topics</h3>
+                <Separator className="my-2" />
+                <ul className="space-y-1">
+                  {Object.entries(topics).map(([key, { displayName }]) => (
+                    <li key={key}>
+                      <Button 
+                        variant="ghost" 
+                        className={`w-full justify-start ${topic === key ? 'text-math-primary font-medium' : ''}`}
+                        onClick={() => handleTopicClick(key as keyof typeof topics)}
+                      >
+                        {displayName}
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-          </div>
 
-          {/* Main Content */}
-          <div className="flex-1">
-            <Tabs defaultValue={relevantChapter ? `${topic}_chapter${relevantChapter}` : `${topic}_chapter1`}>
-              <div className="bg-white rounded-t-lg shadow px-4 pt-4">
-                <h1 className="text-2xl font-bold mb-4 text-math-primary">
-                  {topics[topic as keyof typeof topics].displayName}
-                  {searchTerm && (
-                    <span className="ml-2 text-sm bg-blue-100 text-blue-800 py-1 px-2 rounded">
-                      Search: {searchTerm}
-                    </span>
-                  )}
-                </h1>
-                <TabsList>
-                  {topics[topic as keyof typeof topics].chapters.map((chapter, index) => (
-                    <TabsTrigger 
-                      key={`${topic}_chapter${index + 1}`} 
-                      value={`${topic}_chapter${index + 1}`}
-                      className={relevantChapter === index + 1 ? 'border-2 border-math-primary' : ''}
-                      onClick={() => {
-                        const urlParams = new URLSearchParams(location.search);
-                        urlParams.set('chapter', `${index + 1}`);
-                        navigate(`/content?${urlParams.toString()}`);
-                      }}
-                    >
-                      {chapter}
-                      {relevantChapter === index + 1 && (
-                        <span className="ml-1 text-xs bg-yellow-100 text-yellow-800 px-1 rounded">
-                          Match
+            {/* Main Content with Resizable Panels */}
+            <ResizablePanelGroup direction="horizontal" className="flex-1 rounded-lg overflow-hidden">
+              {/* PDF Viewer Panel */}
+              <ResizablePanel defaultSize={75} minSize={50}>
+                <Tabs 
+                  defaultValue={relevantChapter ? `${topic}_chapter${relevantChapter}` : `${topic}_chapter${currentChapter}`}
+                  onValueChange={(value) => {
+                    const chapterMatch = value.match(/_chapter(\d+)$/);
+                    if (chapterMatch && chapterMatch[1]) {
+                      handleChapterChange(parseInt(chapterMatch[1]));
+                    }
+                  }}
+                >
+                  <div className="bg-white rounded-t-lg shadow px-4 pt-4">
+                    <h1 className="text-2xl font-bold mb-4 text-math-primary">
+                      {topics[topic as keyof typeof topics].displayName}
+                      {searchTerm && (
+                        <span className="ml-2 text-sm bg-blue-100 text-blue-800 py-1 px-2 rounded">
+                          Search: {searchTerm}
                         </span>
                       )}
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
-              </div>
+                    </h1>
+                    <TabsList className="w-full flex overflow-x-auto">
+                      {topics[topic as keyof typeof topics].chapters.map((chapter, index) => (
+                        <TabsTrigger 
+                          key={`${topic}_chapter${index + 1}`} 
+                          value={`${topic}_chapter${index + 1}`}
+                          className={relevantChapter === index + 1 ? 'border-2 border-math-primary' : ''}
+                        >
+                          {chapter}
+                          {relevantChapter === index + 1 && (
+                            <span className="ml-1 text-xs bg-yellow-100 text-yellow-800 px-1 rounded">
+                              Match
+                            </span>
+                          )}
+                        </TabsTrigger>
+                      ))}
+                    </TabsList>
+                  </div>
 
-              <div className="mt-px">
-                {topics[topic as keyof typeof topics].chapters.map((_, index) => (
-                  <TabsContent key={`${topic}_chapter${index + 1}`} value={`${topic}_chapter${index + 1}`}>
-                    {/* Add LinearDependenceSolver for Linear Algebra Chapter 7 */}
-                    {topic === 'linearAlgebra' && index === 6 && (
-                      <div className="mb-6">
-                        <LinearDependenceSolver />
-                      </div>
-                    )}
-                    <PDFViewer pdfPath={`/pdfs/${topic}_chapter${index + 1}.pdf`} searchTerm={searchTerm} />
-                  </TabsContent>
-                ))}
-              </div>
-            </Tabs>
+                  <div className="mt-px">
+                    {topics[topic as keyof typeof topics].chapters.map((_, index) => {
+                      const chapterNumber = index + 1;
+                      return (
+                        <TabsContent key={`${topic}_chapter${chapterNumber}`} value={`${topic}_chapter${chapterNumber}`}>
+                          {/* Add LinearDependenceSolver for Linear Algebra Chapter 7 */}
+                          {topic === 'linearAlgebra' && chapterNumber === 7 && (
+                            <div className="mb-6">
+                              <LinearDependenceSolver />
+                            </div>
+                          )}
+                          
+                          <PDFViewer pdfPath={`/pdfs/${topic}_chapter${chapterNumber}.pdf`} searchTerm={searchTerm} />
+                          
+                          {/* Horizontal Reactor Panel below PDF */}
+                          <div className="mt-6">
+                            <ReactorPanel topic={topic} chapter={chapterNumber} />
+                          </div>
+                        </TabsContent>
+                      );
+                    })}
+                  </div>
+                </Tabs>
+              </ResizablePanel>
+              
+              {/* Resizable Handle */}
+              <ResizableHandle withHandle />
+              
+              {/* Quiz Panel */}
+              <ResizablePanel defaultSize={25} minSize={20}>
+                <div className="h-full bg-slate-50">
+                  <QuizPanel topic={topic} chapter={currentChapter} />
+                </div>
+              </ResizablePanel>
+            </ResizablePanelGroup>
           </div>
         </div>
       </div>
