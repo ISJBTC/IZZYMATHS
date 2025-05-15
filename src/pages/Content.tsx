@@ -10,12 +10,14 @@ import { useToast } from '@/hooks/use-toast';
 import LinearDependenceSolver from '@/components/LinearDependenceSolver';
 import ReactorPanel from '@/components/ReactorPanel';
 import QuizPanel from '@/components/QuizPanel';
+import QuizPerformancePanel from '@/components/QuizPerformancePanel';
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
 
 const Content: React.FC = () => {
   const [topic, setTopic] = useState('linearAlgebra');
   const [searchTerm, setSearchTerm] = useState<string | null>(null);
   const [currentChapter, setCurrentChapter] = useState<number>(1);
+  const [showQuizPerformance, setShowQuizPerformance] = useState<boolean>(false);
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -176,6 +178,10 @@ const Content: React.FC = () => {
   const isLinearAlgebraChapter7 = topic === 'linearAlgebra' && 
     (queryParams.get('chapter') === '7' || relevantChapter === 7);
 
+  const toggleQuizPerformance = () => {
+    setShowQuizPerformance(!showQuizPerformance);
+  };
+
   return (
     <MainLayout>
       <div className="container max-w-7xl mx-auto py-8 px-4">
@@ -200,6 +206,22 @@ const Content: React.FC = () => {
                     </li>
                   ))}
                 </ul>
+              </div>
+              
+              <div className="bg-white p-4 rounded-lg shadow">
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={toggleQuizPerformance}
+                >
+                  {showQuizPerformance ? "Hide Performance" : "Show Performance"}
+                </Button>
+                
+                {showQuizPerformance && (
+                  <div className="mt-4">
+                    <QuizPerformancePanel topic={topic} />
+                  </div>
+                )}
               </div>
             </div>
 

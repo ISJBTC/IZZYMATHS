@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Quiz, Check, X, ArrowRight } from 'lucide-react';
+import { BarChart2, Check, X, ArrowRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface QuizQuestion {
@@ -82,10 +82,110 @@ const QuizPanel: React.FC<QuizPanelProps> = ({ topic, chapter }) => {
           explanation: "Matrix addition is done element-wise. So A + B = [[1+5, 2+6], [3+7, 4+8]] = [[6, 8], [10, 12]]."
         }
       ],
-      7: linearAlgebraCh7Questions
-      // Other chapters...
+      2: [
+        {
+          id: 1,
+          question: "What is the result of multiplying matrix A = [[1, 2], [3, 4]] and B = [[5, 6], [7, 8]]?",
+          options: [
+            "[[19, 22], [43, 50]]",
+            "[[5, 12], [21, 32]]",
+            "[[1, 2, 5, 6], [3, 4, 7, 8]]",
+            "[[6, 8], [10, 12]]"
+          ],
+          correctAnswer: 0,
+          explanation: "Matrix multiplication: (AB)ᵢⱼ = Σₖ AᵢₖBₖⱼ. So AB = [[1×5+2×7, 1×6+2×8], [3×5+4×7, 3×6+4×8]] = [[19, 22], [43, 50]]."
+        }
+      ],
+      3: [
+        {
+          id: 1,
+          question: "What is the determinant of matrix A = [[4, 3], [2, 1]]?",
+          options: [
+            "-2",
+            "2",
+            "4",
+            "10"
+          ],
+          correctAnswer: 0,
+          explanation: "For a 2×2 matrix [[a, b], [c, d]], the determinant is ad - bc. So det(A) = 4×1 - 3×2 = 4 - 6 = -2."
+        }
+      ],
+      4: [
+        {
+          id: 1,
+          question: "Which of the following is a property of a vector space?",
+          options: [
+            "Closure under addition and scalar multiplication",
+            "Every element must be a vector",
+            "Must be in three dimensions",
+            "Must contain the origin"
+          ],
+          correctAnswer: 0,
+          explanation: "A vector space must be closed under addition and scalar multiplication, meaning if u and v are in the space, then u+v and cu (for any scalar c) must also be in the space."
+        }
+      ],
+      5: [
+        {
+          id: 1,
+          question: "For a 3×3 matrix, how many eigenvalues can it have?",
+          options: [
+            "Exactly 3, counting multiplicities",
+            "Exactly 3, distinct values",
+            "At most 3",
+            "At least 3"
+          ],
+          correctAnswer: 0,
+          explanation: "A square matrix of size n×n has exactly n eigenvalues when counting with their multiplicities. So a 3×3 matrix has exactly 3 eigenvalues (though some may be repeated)."
+        }
+      ],
+      6: [
+        {
+          id: 1,
+          question: "What is the inner product of vectors u = [1, 2, 3] and v = [4, 5, 6]?",
+          options: [
+            "32",
+            "14",
+            "9",
+            "6"
+          ],
+          correctAnswer: 0,
+          explanation: "The inner product of vectors u = [u₁, u₂, u₃] and v = [v₁, v₂, v₃] is u₁v₁ + u₂v₂ + u₃v₃. So u·v = 1×4 + 2×5 + 3×6 = 4 + 10 + 18 = 32."
+        }
+      ],
+      7: linearAlgebraCh7Questions,
+      8: [
+        {
+          id: 1,
+          question: "Which of the following is a characteristic of a linear transformation T?",
+          options: [
+            "T(u + v) = T(u) + T(v) and T(cu) = cT(u) for any scalar c",
+            "T(u × v) = T(u) × T(v) for cross product ×",
+            "T(u · v) = T(u) · T(v) for dot product ·",
+            "T(u + v) = T(u) × T(v)"
+          ],
+          correctAnswer: 0,
+          explanation: "A linear transformation must preserve vector addition and scalar multiplication. These are the defining properties: T(u + v) = T(u) + T(v) and T(cu) = cT(u) for any scalar c."
+        }
+      ]
     },
-    // Other topics...
+    diffEq: {
+      1: [
+        {
+          id: 1,
+          question: "Which of the following is a first-order differential equation?",
+          options: [
+            "dy/dx + y = x",
+            "d²y/dx² + y = 0",
+            "y = x² + 2x + 1",
+            "d³y/dx³ + d²y/dx² = sin(x)"
+          ],
+          correctAnswer: 0,
+          explanation: "A first-order differential equation contains only the first derivative of the unknown function. The equation dy/dx + y = x involves only dy/dx, making it first-order."
+        }
+      ],
+      // Other chapters for diffEq
+    },
+    // Other topics with their chapter questions
   };
 
   // Get questions for current topic and chapter
@@ -112,7 +212,7 @@ const QuizPanel: React.FC<QuizPanelProps> = ({ topic, chapter }) => {
   };
 
   const questions = getQuestions();
-  const currentQuestion = questions[currentQuestionIndex];
+  const currentQuestion = questions[currentQuestionIndex || 0];
 
   const handleAnswerSelect = (answerIndex: number) => {
     setSelectedAnswer(answerIndex);
@@ -159,7 +259,7 @@ const QuizPanel: React.FC<QuizPanelProps> = ({ topic, chapter }) => {
   return (
     <div className="w-full h-full bg-white rounded-lg shadow-md p-4">
       <div className="flex items-center gap-2 mb-4">
-        <Quiz className="h-5 w-5 text-math-primary" />
+        <BarChart2 className="h-5 w-5 text-math-primary" />
         <h3 className="text-lg font-bold">Chapter Quiz</h3>
       </div>
 

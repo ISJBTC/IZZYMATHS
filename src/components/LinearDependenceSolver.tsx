@@ -267,7 +267,7 @@ const LinearDependenceSolver: React.FC = () => {
         }
       ],
       hint: "If the rank of the matrix equals the number of vectors, then the vectors are linearly independent. If the rank is less than the number of vectors, then they are linearly dependent.",
-      solution: "Since our reduced row echelon form has rank 3 (three pivot columns), and we're testing 3 vectors, we can conclude that the vectors are linearly independent.\n\nThis means that none of the vectors in our set {v₁, v₂, v₃} can be expressed as a linear combination of the others. Equivalently, the equation c₁v₁ + c₂v₂ + c₃v₃ = 0 has only the trivial solution c₁=c₂=c₃=0.\n\nIf the vectors had been linearly dependent, we would have had at least one free variable, which would have allowed non-zero values for the coefficients, indicating that at least one vector could be expressed as a linear combination of the others."
+      solution: "Since our reduced row echelon form has rank 3 (three pivot columns), and we're testing 3 vectors, we can conclude that the vectors are linearly independent.\n\nThis means that none of the vectors in our set {v₁, v₂, v₃} can be expressed as a linear combination of the others. Equivalently, the equation c₁v₁ + c₂v₂ + c₃v₃ = 0 has only the trivial solution c₁=c₂=c₃=0.\n\nIf the vectors had been linearly dependent, we would have found specific coefficients c₁, c₂, c₃ (not all zero) that satisfy the equation."
     },
     {
       id: 'conclusion',
@@ -324,6 +324,12 @@ const LinearDependenceSolver: React.FC = () => {
     }
   ];
   
+  // Define a getter function for the current step
+  const getStep = () => steps[currentStep];
+  
+  // Access the current step object
+  const step = getStep();
+
   // Update full solution when a correct option is selected
   useEffect(() => {
     if (showStepSolution && step.solution) {
@@ -346,9 +352,6 @@ const LinearDependenceSolver: React.FC = () => {
   const findStep = (stepId: string): Step | undefined => {
     return steps.find(step => step.id === stepId);
   };
-  
-  // Current step object
-  const step: Step = steps[currentStep];
   
   // Go back to the previous step
   const goBackStep = (): void => {
