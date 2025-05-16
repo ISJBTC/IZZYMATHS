@@ -1,16 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { BarChart2, Check, X, ArrowRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-
-interface QuizQuestion {
-  id: number;
-  question: string;
-  options: string[];
-  correctAnswer: number;
-  explanation: string;
-}
+import { QuizQuestion } from '@/types/quiz-types';
+import { fetchQuestions } from '@/lib/quiz-service';
 
 interface QuizPanelProps {
   topic: string;
@@ -23,195 +17,49 @@ const QuizPanel: React.FC<QuizPanelProps> = ({ topic, chapter }) => {
   const [showExplanation, setShowExplanation] = useState(false);
   const [score, setScore] = useState(0);
   const [quizCompleted, setQuizCompleted] = useState(false);
+  const [questions, setQuestions] = useState<QuizQuestion[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
-  // Sample quiz questions for Linear Algebra Chapter 7
-  const linearAlgebraCh7Questions: QuizQuestion[] = [
-    {
-      id: 1,
-      question: "A set of vectors is linearly dependent if and only if:",
-      options: [
-        "At least one vector can be expressed as a linear combination of the others",
-        "All vectors are orthogonal to each other",
-        "The vectors span the entire vector space",
-        "None of the vectors can be expressed as a linear combination of the others"
-      ],
-      correctAnswer: 0,
-      explanation: "Linear dependence means at least one vector can be written as a linear combination of the others. Equivalently, there exists a non-trivial solution to the equation c₁v₁ + c₂v₂ + ... + cₙvₙ = 0."
-    },
-    {
-      id: 2,
-      question: "If a set of n vectors in R^m is linearly independent, then which of the following must be true?",
-      options: [
-        "n = m",
-        "n ≤ m",
-        "n ≥ m",
-        "n < m"
-      ],
-      correctAnswer: 1,
-      explanation: "In R^m, you can have at most m linearly independent vectors. Therefore, if n vectors are linearly independent in R^m, then n must be less than or equal to m."
-    },
-    {
-      id: 3,
-      question: "To check if vectors v₁, v₂, v₃ are linearly dependent, what equation do we need to solve?",
-      options: [
-        "v₁ + v₂ + v₃ = 0",
-        "c₁v₁ + c₂v₂ + c₃v₃ = 0, where not all c₁, c₂, c₃ are zero",
-        "v₁v₂v₃ = 0",
-        "c₁v₁ = c₂v₂ = c₃v₃"
-      ],
-      correctAnswer: 1,
-      explanation: "We need to find if there exist scalars c₁, c₂, c₃, not all zero, such that c₁v₁ + c₂v₂ + c₃v₃ = 0. If such scalars exist, then the vectors are linearly dependent."
-    }
-  ];
-
-  // Sample quiz questions for other chapters
-  const quizQuestions: Record<string, Record<number, QuizQuestion[]>> = {
-    linearAlgebra: {
-      1: [
-        {
-          id: 1,
-          question: "What is the result of adding matrix A = [[1, 2], [3, 4]] and B = [[5, 6], [7, 8]]?",
-          options: [
-            "[[6, 8], [10, 12]]",
-            "[[5, 12], [21, 32]]",
-            "[[1, 2, 5, 6], [3, 4, 7, 8]]",
-            "Not possible to add"
-          ],
-          correctAnswer: 0,
-          explanation: "Matrix addition is done element-wise. So A + B = [[1+5, 2+6], [3+7, 4+8]] = [[6, 8], [10, 12]]."
-        }
-      ],
-      2: [
-        {
-          id: 1,
-          question: "What is the result of multiplying matrix A = [[1, 2], [3, 4]] and B = [[5, 6], [7, 8]]?",
-          options: [
-            "[[19, 22], [43, 50]]",
-            "[[5, 12], [21, 32]]",
-            "[[1, 2, 5, 6], [3, 4, 7, 8]]",
-            "[[6, 8], [10, 12]]"
-          ],
-          correctAnswer: 0,
-          explanation: "Matrix multiplication: (AB)ᵢⱼ = Σₖ AᵢₖBₖⱼ. So AB = [[1×5+2×7, 1×6+2×8], [3×5+4×7, 3×6+4×8]] = [[19, 22], [43, 50]]."
-        }
-      ],
-      3: [
-        {
-          id: 1,
-          question: "What is the determinant of matrix A = [[4, 3], [2, 1]]?",
-          options: [
-            "-2",
-            "2",
-            "4",
-            "10"
-          ],
-          correctAnswer: 0,
-          explanation: "For a 2×2 matrix [[a, b], [c, d]], the determinant is ad - bc. So det(A) = 4×1 - 3×2 = 4 - 6 = -2."
-        }
-      ],
-      4: [
-        {
-          id: 1,
-          question: "Which of the following is a property of a vector space?",
-          options: [
-            "Closure under addition and scalar multiplication",
-            "Every element must be a vector",
-            "Must be in three dimensions",
-            "Must contain the origin"
-          ],
-          correctAnswer: 0,
-          explanation: "A vector space must be closed under addition and scalar multiplication, meaning if u and v are in the space, then u+v and cu (for any scalar c) must also be in the space."
-        }
-      ],
-      5: [
-        {
-          id: 1,
-          question: "For a 3×3 matrix, how many eigenvalues can it have?",
-          options: [
-            "Exactly 3, counting multiplicities",
-            "Exactly 3, distinct values",
-            "At most 3",
-            "At least 3"
-          ],
-          correctAnswer: 0,
-          explanation: "A square matrix of size n×n has exactly n eigenvalues when counting with their multiplicities. So a 3×3 matrix has exactly 3 eigenvalues (though some may be repeated)."
-        }
-      ],
-      6: [
-        {
-          id: 1,
-          question: "What is the inner product of vectors u = [1, 2, 3] and v = [4, 5, 6]?",
-          options: [
-            "32",
-            "14",
-            "9",
-            "6"
-          ],
-          correctAnswer: 0,
-          explanation: "The inner product of vectors u = [u₁, u₂, u₃] and v = [v₁, v₂, v₃] is u₁v₁ + u₂v₂ + u₃v₃. So u·v = 1×4 + 2×5 + 3×6 = 4 + 10 + 18 = 32."
-        }
-      ],
-      7: linearAlgebraCh7Questions,
-      8: [
-        {
-          id: 1,
-          question: "Which of the following is a characteristic of a linear transformation T?",
-          options: [
-            "T(u + v) = T(u) + T(v) and T(cu) = cT(u) for any scalar c",
-            "T(u × v) = T(u) × T(v) for cross product ×",
-            "T(u · v) = T(u) · T(v) for dot product ·",
-            "T(u + v) = T(u) × T(v)"
-          ],
-          correctAnswer: 0,
-          explanation: "A linear transformation must preserve vector addition and scalar multiplication. These are the defining properties: T(u + v) = T(u) + T(v) and T(cu) = cT(u) for any scalar c."
-        }
-      ]
-    },
-    diffEq: {
-      1: [
-        {
-          id: 1,
-          question: "Which of the following is a first-order differential equation?",
-          options: [
-            "dy/dx + y = x",
-            "d²y/dx² + y = 0",
-            "y = x² + 2x + 1",
-            "d³y/dx³ + d²y/dx² = sin(x)"
-          ],
-          correctAnswer: 0,
-          explanation: "A first-order differential equation contains only the first derivative of the unknown function. The equation dy/dx + y = x involves only dy/dx, making it first-order."
-        }
-      ],
-      // Other chapters for diffEq
-    },
-    // Other topics with their chapter questions
-  };
-
-  // Get questions for current topic and chapter
-  const getQuestions = (): QuizQuestion[] => {
-    if (quizQuestions[topic] && quizQuestions[topic][chapter]) {
-      return quizQuestions[topic][chapter];
-    }
-    
-    // Return default questions if none exist for this topic/chapter
-    return [
-      {
-        id: 1,
-        question: `Quiz questions for ${topic} Chapter ${chapter} coming soon!`,
-        options: [
-          "Option A",
-          "Option B",
-          "Option C",
-          "Option D"
-        ],
-        correctAnswer: 0,
-        explanation: "This is a placeholder quiz. Real questions will be added soon."
+  // Fetch questions based on topic and chapter
+  useEffect(() => {
+    const loadQuestions = async () => {
+      setIsLoading(true);
+      try {
+        const loadedQuestions = await fetchQuestions(topic, chapter);
+        setQuestions(loadedQuestions);
+      } catch (error) {
+        console.error("Error loading questions:", error);
+        toast({
+          title: "Error loading questions",
+          description: "Could not load quiz questions. Please try again later.",
+          variant: "destructive",
+        });
+        // Set fallback questions
+        setQuestions([
+          {
+            id: 1,
+            question: `Quiz questions for ${topic} Chapter ${chapter} could not be loaded.`,
+            options: ["Option A", "Option B", "Option C", "Option D"],
+            correctAnswer: 0,
+            explanation: "This is a placeholder. Please try again later."
+          }
+        ]);
+      } finally {
+        setIsLoading(false);
       }
-    ];
-  };
+    };
 
-  const questions = getQuestions();
+    // Reset quiz state when topic or chapter changes
+    setCurrentQuestionIndex(0);
+    setSelectedAnswer(null);
+    setShowExplanation(false);
+    setScore(0);
+    setQuizCompleted(false);
+
+    loadQuestions();
+  }, [topic, chapter, toast]);
+
   const currentQuestion = questions[currentQuestionIndex || 0];
 
   const handleAnswerSelect = (answerIndex: number) => {
@@ -229,7 +77,7 @@ const QuizPanel: React.FC<QuizPanelProps> = ({ topic, chapter }) => {
 
     setShowExplanation(true);
     
-    if (selectedAnswer === currentQuestion.correctAnswer) {
+    if (selectedAnswer === currentQuestion?.correctAnswer) {
       setScore(score + 1);
     }
   };
@@ -243,7 +91,7 @@ const QuizPanel: React.FC<QuizPanelProps> = ({ topic, chapter }) => {
       setQuizCompleted(true);
       toast({
         title: "Quiz completed!",
-        description: `Your score: ${score + (selectedAnswer === currentQuestion.correctAnswer ? 1 : 0)}/${questions.length}`,
+        description: `Your score: ${score + (selectedAnswer === currentQuestion?.correctAnswer ? 1 : 0)}/${questions.length}`,
       });
     }
   };
@@ -255,6 +103,24 @@ const QuizPanel: React.FC<QuizPanelProps> = ({ topic, chapter }) => {
     setScore(0);
     setQuizCompleted(false);
   };
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-full bg-white rounded-lg shadow-md p-4 flex items-center justify-center">
+        <p>Loading questions...</p>
+      </div>
+    );
+  }
+
+  if (!currentQuestion) {
+    return (
+      <div className="w-full h-full bg-white rounded-lg shadow-md p-4">
+        <div className="text-center p-4">
+          <p>No questions available for this topic and chapter.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-full bg-white rounded-lg shadow-md p-4">
