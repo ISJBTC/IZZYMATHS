@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { BarChart2, Check, X, ArrowRight } from 'lucide-react';
+import { BarChart2, Check, X, ArrowRight, ArrowLeft, Expand, Minimize, SkipForward } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { QuizQuestion } from '@/types/quiz-types';
 import { fetchQuestions } from '@/lib/quiz-service';
@@ -11,15 +11,76 @@ interface QuizPanelProps {
   chapter: number;
 }
 
+// Add MathJax type definition to window
+declare global {
+  interface Window {
+    MathJax?: {
+      typesetPromise?: () => Promise<any>;
+      [key: string]: any;
+    }
+  }
+}
+
 const QuizPanel: React.FC<QuizPanelProps> = ({ topic, chapter }) => {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [showExplanation, setShowExplanation] = useState(false);
-  const [score, setScore] = useState(0);
-  const [quizCompleted, setQuizCompleted] = useState(false);
+  const [showExplanation, setShowExplanation] = useState<boolean>(false);
+  const [score, setScore] = useState<number>(0);
+  const [quizCompleted, setQuizCompleted] = useState<boolean>(false);
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [expanded, setExpanded] = useState<boolean>(false);
+  const [skippedQuestions, setSkippedQuestions] = useState<number[]>([]);
   const { toast } = useToast();
+
+  // MathJax initialization
+  const mathJaxScript = useRef<HTMLScriptElement | null>(null);
+
+  useEffect(() => {
+    // Add MathJax script if it doesn't exist
+    if (!window.MathJax) {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.async = true;
+      script.id = 'MathJax-script';
+      
+      // Configure MathJax
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true
+        },
+        svg: {
+          fontCache: 'global'
+        },
+        options: {
+          enableMenu: false
+        }
+      };
+      
+      document.head.appendChild(script);
+      mathJaxScript.current = script;
+    }
+  }, []);
+
+  // Function to typeset math when content changes
+  const typesetMath = () => {
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      window.MathJax.typesetPromise().catch(err => console.error('MathJax typesetting failed:', err));
+    }
+  };
+
+  // Typeset math when questions change or current question changes
+  useEffect(() => {
+    if (questions.length > 0) {
+      // Small delay to ensure DOM is updated
+      const timer = setTimeout(() => {
+        typesetMath();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [questions, currentQuestionIndex, showExplanation]);
 
   // Fetch questions based on topic and chapter
   useEffect(() => {
@@ -56,11 +117,12 @@ const QuizPanel: React.FC<QuizPanelProps> = ({ topic, chapter }) => {
     setShowExplanation(false);
     setScore(0);
     setQuizCompleted(false);
+    setSkippedQuestions([]);
 
     loadQuestions();
   }, [topic, chapter, toast]);
 
-  const currentQuestion = questions[currentQuestionIndex || 0];
+  const currentQuestion = questions[currentQuestionIndex] || null;
 
   const handleAnswerSelect = (answerIndex: number) => {
     setSelectedAnswer(answerIndex);
@@ -77,7 +139,7 @@ const QuizPanel: React.FC<QuizPanelProps> = ({ topic, chapter }) => {
 
     setShowExplanation(true);
     
-    if (selectedAnswer === currentQuestion?.correctAnswer) {
+    if (currentQuestion && selectedAnswer === currentQuestion.correctAnswer) {
       setScore(score + 1);
     }
   };
@@ -88,12 +150,66 @@ const QuizPanel: React.FC<QuizPanelProps> = ({ topic, chapter }) => {
       setSelectedAnswer(null);
       setShowExplanation(false);
     } else {
-      setQuizCompleted(true);
-      toast({
-        title: "Quiz completed!",
-        description: `Your score: ${score + (selectedAnswer === currentQuestion?.correctAnswer ? 1 : 0)}/${questions.length}`,
-      });
+      // Check if there are any skipped questions
+      if (skippedQuestions.length > 0) {
+        toast({
+          title: "Skipped Questions",
+          description: `You have ${skippedQuestions.length} skipped questions. Would you like to review them?`,
+          action: (
+            <Button variant="outline" onClick={goToFirstSkippedQuestion}>
+              Review
+            </Button>
+          ),
+        });
+      } else {
+        completeQuiz();
+      }
     }
+  };
+
+  const handlePreviousQuestion = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+      setSelectedAnswer(null);
+      setShowExplanation(false);
+    }
+  };
+
+  const handleSkipQuestion = () => {
+    // Add current question to skipped list if not already skipped
+    if (!skippedQuestions.includes(currentQuestionIndex)) {
+      setSkippedQuestions([...skippedQuestions, currentQuestionIndex]);
+    }
+    
+    // Move to next question
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setSelectedAnswer(null);
+      setShowExplanation(false);
+    } else {
+      // If we're at the last question, go to the first skipped question
+      goToFirstSkippedQuestion();
+    }
+  };
+
+  const goToFirstSkippedQuestion = () => {
+    if (skippedQuestions.length > 0) {
+      setCurrentQuestionIndex(skippedQuestions[0]);
+      // Remove this question from the skipped list
+      setSkippedQuestions(skippedQuestions.slice(1));
+      setSelectedAnswer(null);
+      setShowExplanation(false);
+    } else {
+      completeQuiz();
+    }
+  };
+
+  const completeQuiz = () => {
+    setQuizCompleted(true);
+    toast({
+      title: "Quiz completed!",
+      description: `Your score: ${score + (currentQuestion && selectedAnswer === currentQuestion.correctAnswer ? 1 : 0)}/${questions.length}`,
+    });
   };
 
   const resetQuiz = () => {
@@ -102,6 +218,11 @@ const QuizPanel: React.FC<QuizPanelProps> = ({ topic, chapter }) => {
     setShowExplanation(false);
     setScore(0);
     setQuizCompleted(false);
+    setSkippedQuestions([]);
+  };
+
+  const toggleExpand = () => {
+    setExpanded(!expanded);
   };
 
   if (isLoading) {
@@ -123,16 +244,38 @@ const QuizPanel: React.FC<QuizPanelProps> = ({ topic, chapter }) => {
   }
 
   return (
-    <div className="w-full h-full bg-white rounded-lg shadow-md p-4">
-      <div className="flex items-center gap-2 mb-4">
-        <BarChart2 className="h-5 w-5 text-math-primary" />
-        <h3 className="text-lg font-bold">Chapter Quiz</h3>
+    <div className={`transition-all duration-300 ease-in-out bg-white rounded-lg shadow-md p-4 ${expanded ? 'fixed inset-4 z-50 overflow-auto' : 'w-full h-full'}`}>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <BarChart2 className="h-5 w-5 text-math-primary" />
+          <h3 className="text-lg font-bold">Chapter Quiz</h3>
+        </div>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          onClick={toggleExpand}
+          className="ml-auto"
+        >
+          {expanded ? <Minimize className="h-4 w-4" /> : <Expand className="h-4 w-4" />}
+        </Button>
       </div>
 
       {!quizCompleted ? (
         <Card className="border-t-4 border-t-math-primary">
           <CardHeader>
-            <CardTitle className="text-base">Question {currentQuestionIndex + 1} of {questions.length}</CardTitle>
+            <div className="flex justify-between items-center">
+              <CardTitle className="text-base">
+                Question {currentQuestionIndex + 1} of {questions.length}
+                {skippedQuestions.includes(currentQuestionIndex) && (
+                  <span className="ml-2 text-amber-500 text-xs font-medium">(Skipped)</span>
+                )}
+              </CardTitle>
+              {skippedQuestions.length > 0 && (
+                <span className="text-xs text-gray-500">
+                  Skipped: {skippedQuestions.length}
+                </span>
+              )}
+            </div>
             <CardDescription className="font-medium text-black text-base">
               {currentQuestion.question}
             </CardDescription>
@@ -172,29 +315,55 @@ const QuizPanel: React.FC<QuizPanelProps> = ({ topic, chapter }) => {
             {showExplanation && (
               <div className="mt-4 p-3 bg-blue-50 rounded-md border border-blue-100">
                 <p className="font-medium text-sm">Explanation:</p>
-                <p className="text-sm">{currentQuestion.explanation}</p>
+                <p className="text-sm">
+                  {currentQuestion.explanation}
+                </p>
               </div>
             )}
           </CardContent>
-          <CardFooter className="flex justify-between">
-            {!showExplanation ? (
-              <Button 
-                variant="default" 
-                onClick={handleCheckAnswer}
-                disabled={selectedAnswer === null}
-              >
-                Check Answer
-              </Button>
-            ) : (
+          <CardFooter className="flex flex-wrap gap-2 justify-between">
+            <div className="flex gap-2">
               <Button 
                 variant="outline" 
-                onClick={handleNextQuestion}
+                onClick={handlePreviousQuestion}
+                disabled={currentQuestionIndex === 0}
                 className="flex items-center gap-1"
               >
-                {currentQuestionIndex < questions.length - 1 ? "Next Question" : "Complete Quiz"}
-                <ArrowRight className="h-4 w-4" />
+                <ArrowLeft className="h-4 w-4" />
+                Previous
               </Button>
-            )}
+              
+              {!showExplanation ? (
+                <>
+                  <Button 
+                    variant="default" 
+                    onClick={handleCheckAnswer}
+                    disabled={selectedAnswer === null}
+                  >
+                    Check Answer
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={handleSkipQuestion}
+                    className="flex items-center gap-1"
+                  >
+                    Skip
+                    <SkipForward className="h-4 w-4" />
+                  </Button>
+                </>
+              ) : (
+                <Button 
+                  variant="default" 
+                  onClick={handleNextQuestion}
+                  className="flex items-center gap-1"
+                >
+                  {currentQuestionIndex < questions.length - 1 || skippedQuestions.length > 0 
+                    ? "Next Question" 
+                    : "Complete Quiz"}
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
             <div className="text-sm">
               Score: {score}/{questions.length}
             </div>
